@@ -56,6 +56,7 @@ func _process(delta):
 
 
 func _on_body_entered(_body):
+	print('Hit!')
 	if not invincible:
 		health-=1
 		update_health_bar()

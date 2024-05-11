@@ -1,6 +1,7 @@
 extends Node2D
 
 var moveSpeed=150
+var bulletSpeed=200
 var screen_size
 @export var bulletScene: PackedScene
 # Called when the node enters the scene tree for the first time.
@@ -18,4 +19,5 @@ func _process(delta):
 func _on_bullet_timer_timeout():
 	var bullet = bulletScene.instantiate()
 	bullet.position=position
+	bullet.linear_velocity=Vector2(0,bulletSpeed)
 	get_parent().add_child(bullet)
