@@ -1,6 +1,6 @@
 [gd_scene load_steps=14 format=3 uid="uid://dtc131qajh4lj"]
 
-[ext_resource type="Script" path="res://enemy 1.gd" id="1_iuewl"]
+[ext_resource type="Script" path="res://assets/scripts/enemy 1.gd" id="1_iuewl"]
 [ext_resource type="PackedScene" uid="uid://bjdjrr1f380ro" path="res://scenes/bullet.tscn" id="2_h7ko8"]
 [ext_resource type="Texture2D" uid="uid://bvfs4twfpiwix" path="res://assets/sprites/enemies/Enemy 1.png" id="2_r28o7"]
 [ext_resource type="Texture2D" uid="uid://bws4kiwrku3qt" path="res://assets/sprites/enemies/explode/0001.png" id="4_xumh0"]
@@ -48,13 +48,12 @@ animations = [{
 }]
 
 [node name="enemy 1" type="Area2D"]
-scale = Vector2(2, 2)
+scale = Vector2(4, 4)
 collision_mask = 2
 script = ExtResource("1_iuewl")
 bulletScene = ExtResource("2_h7ko8")
 
 [node name="BulletTimer" type="Timer" parent="."]
-autostart = true
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2_r28o7")
