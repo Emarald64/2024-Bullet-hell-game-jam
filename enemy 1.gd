@@ -18,4 +18,4 @@ func _process(delta):
 func _on_bullet_timer_timeout():
 	var bullet = bulletScene.instantiate()
 	bullet.position=position
-	add_child(bullet)
+	get_parent().add_child(bullet)

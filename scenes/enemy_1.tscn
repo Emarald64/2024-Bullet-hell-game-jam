@@ -8,6 +8,7 @@
 size = Vector2(16, 16)
 
 [node name="enemy 1" type="Area2D"]
+scale = Vector2(2, 2)
 script = ExtResource("1_iuewl")
 bulletScene = ExtResource("2_h7ko8")
 

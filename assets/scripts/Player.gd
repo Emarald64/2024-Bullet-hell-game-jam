@@ -55,8 +55,8 @@ func _process(delta):
 		position = position.clamp(Vector2.ZERO, play_size)
 
 
-func _on_body_entered(body):
-	if body.get_meta('OnHit')=='damage' and not invincible:
+func _on_body_entered(_body):
+	if not invincible:
 		health-=1
 		update_health_bar()
 		$InvincibleTimer.start()
@@ -75,8 +75,7 @@ func _on_body_entered(body):
 			#speed=((-1.0/(speedmod+3))+1)*SpeedMultipier
 		#body.queue_free()
 	
-func start(pos):
-	position = pos
+func start():
 	velocity=Vector2.ZERO
 	dead=false
 	speedmod=0
