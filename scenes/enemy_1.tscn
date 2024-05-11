@@ -1,0 +1,24 @@
+[gd_scene load_steps=5 format=3 uid="uid://dtc131qajh4lj"]
+
+[ext_resource type="Script" path="res://enemy 1.gd" id="1_iuewl"]
+[ext_resource type="PackedScene" uid="uid://bjdjrr1f380ro" path="res://scenes/bullet.tscn" id="2_h7ko8"]
+[ext_resource type="Texture2D" uid="uid://bvfs4twfpiwix" path="res://assets/sprites/enemies/Enemy 1.png" id="2_r28o7"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4qsxq"]
+size = Vector2(16, 16)
+
+[node name="enemy 1" type="Area2D"]
+script = ExtResource("1_iuewl")
+bulletScene = ExtResource("2_h7ko8")
+
+[node name="BulletTimer" type="Timer" parent="."]
+wait_time = 0.5
+autostart = true
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_r28o7")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_4qsxq")
+
+[connection signal="timeout" from="BulletTimer" to="." method="_on_bullet_timer_timeout"]
