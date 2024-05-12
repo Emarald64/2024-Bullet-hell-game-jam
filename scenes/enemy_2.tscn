@@ -1,14 +1,17 @@
-[gd_scene load_steps=5 format=3 uid="uid://ddxp4fxr8xp4f"]
+[gd_scene load_steps=6 format=3 uid="uid://ddxp4fxr8xp4f"]
 
 [ext_resource type="Texture2D" uid="uid://cja285736trkc" path="res://assets/sprites/circle.svg" id="1_1u62b"]
 [ext_resource type="Script" path="res://assets/scripts/enemy_2.gd" id="1_bvf7a"]
+[ext_resource type="PackedScene" uid="uid://yka2g6rpoifl" path="res://scenes/bouncing_bullet.tscn" id="2_mcfi8"]
 [ext_resource type="PackedScene" uid="uid://0x663knd4u3e" path="res://scenes/enemy_spike.tscn" id="3_27cwi"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_61tkp"]
+radius = 33.0151
 
-[node name="Enemy2" type="RigidBody2D"]
-gravity_scale = 0.0
+[node name="Enemy2" type="Area2D"]
+collision_mask = 2
 script = ExtResource("1_bvf7a")
+bulletScene = ExtResource("2_mcfi8")
 spikeScene = ExtResource("3_27cwi")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -18,5 +21,8 @@ shape = SubResource("CircleShape2D_61tkp")
 texture = ExtResource("1_1u62b")
 
 [node name="ShootTimer" type="Timer" parent="."]
+wait_time = 1.75
+autostart = true
 
-[node name="Spikes" type="Node" parent="."]
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="timeout" from="ShootTimer" to="." method="shoot"]

@@ -21,8 +21,8 @@ var invincible=false
 var dashes
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	screen_size = get_viewport_rect().size
-	play_size=Vector2(screen_size.x,screen_size.y-150)
+	play_size = get_viewport_rect().size
+	#play_size=Vector2(screen_size.x,screen_size.y-150)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):

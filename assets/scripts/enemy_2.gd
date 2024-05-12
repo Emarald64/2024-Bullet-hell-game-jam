@@ -1,6 +1,6 @@
-extends RigidBody2D
+extends Area2D
 
-var moveSpeed=150
+var move:Vector2
 var bulletSpeed=200
 var screen_size
 var dieing=false
@@ -8,22 +8,48 @@ var spawning=true
 @export var bulletScene: PackedScene
 @export var spikeScene: PackedScene
 var numSpikes=4
+var spin=PI
+var spikes:Array
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	screen_size = get_viewport_rect().size
 	for x in range(numSpikes):
 		var spike=spikeScene.instantiate()
-		spike.rotation=(x*TAU/numSpikes)+PI/2
-		spike.position=Vector2(cos(x*TAU/numSpikes),sin(x*TAU/numSpikes))
+		spike.rotation=(x*TAU/numSpikes)-PI/2
+		spike.position=Vector2(cos(x*TAU/numSpikes),sin(x*TAU/numSpikes))*40
 		spike.body_entered.connect(on_spike_hit.bind(spike))
+		spikes.append(spike)
+		add_child(spike)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	pass
+	position+=move*delta
+	if spawning:
+		if position.y>0:spawning=false
+	else:
+		if position.x<0 or position.x>screen_size.x:move.x*=-1
+		if position.y<0 or position.y>screen_size.y:move.y*=-1
+	rotation+=spin*delta
 
 func on_spike_hit(body,spike):
 	spike.queue_free()
 	numSpikes-=1
+	body.queue_free()
+	spikes.erase(spike)
 	if numSpikes==0:
 		# Add exploasion
 		queue_free()
+
+func shoot():
+	for spike in spikes:
+		var bullet=bulletScene.instantiate()
+		bullet.position=spike.position.rotated(rotation)+position
+		bullet.rotation=spike.rotation+rotation
+		bullet.move=Vector2(bulletSpeed,0).rotated(spike.rotation+rotation+PI/2)
+		add_sibling(bullet)
+
+
+func _on_body_entered(body):
+	body.queue_free()
+	# add effect to show bullet deletion
