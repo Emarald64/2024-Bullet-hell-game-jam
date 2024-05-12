@@ -14,11 +14,11 @@ var health=5
 var maxHealth=5
 var dashing=false
 var velocity=Vector2.ZERO
-var dashspeed
-var speedmod=0
-var dashmod=0
+#var dashspeed
+#var speedmod=0
+#var dashmod=0
 var invincible=false 
-var dashes
+#var dashes
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	play_size = get_viewport_rect().size
@@ -83,8 +83,8 @@ func _on_body_entered(_body):
 func start():
 	velocity=Vector2.ZERO
 	dead=false
-	speedmod=0
-	dashmod=0
+	#speedmod=0
+	#dashmod=0
 	show()
 	
 
@@ -93,10 +93,10 @@ func _on_invincibility_timer_timeout():
 	if not dashing:invincible = false
 
 
-func _on_dash_end():
-	dashing=false
-	$DashCooldown.start()
-	if $InvincibleTimer.is_stopped():invincible = false
+#func _on_dash_end():
+	#dashing=false
+	#$DashCooldown.start()
+	#if $InvincibleTimer.is_stopped():invincible = false
 	
 func update_health_bar():
 	$HealthBar.value=health
