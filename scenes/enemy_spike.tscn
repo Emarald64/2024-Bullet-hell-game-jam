@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://0x663knd4u3e"]
+
+[ext_resource type="Texture2D" uid="uid://bvfs4twfpiwix" path="res://assets/sprites/enemies/Enemy 1.png" id="1_0wc0b"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_buwum"]
+size = Vector2(16.0025, 16.0025)
+
+[node name="Enemy Spike" type="Area2D"]
+collision_mask = 2
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_0wc0b")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0.00129269, 0.00128603)
+rotation = -0.00257862
+shape = SubResource("RectangleShape2D_buwum")
