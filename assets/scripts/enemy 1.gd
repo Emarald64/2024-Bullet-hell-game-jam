@@ -6,6 +6,7 @@ var screen_size
 var dieing=false
 var spawning=true
 @export var bulletScene: PackedScene
+signal dead
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	screen_size = get_viewport_rect().size
@@ -38,4 +39,5 @@ func hit(body):
 
 
 func _on_animated_sprite_2d_animation_finished():
+	dead.emit()
 	queue_free()

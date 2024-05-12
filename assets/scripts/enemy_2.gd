@@ -10,6 +10,7 @@ var spawning=true
 var numSpikes=4
 var spin=PI
 var spikes:Array
+signal dead
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	screen_size = get_viewport_rect().size
@@ -39,6 +40,7 @@ func on_spike_hit(body,spike):
 	spikes.erase(spike)
 	if numSpikes==0:
 		# Add exploasion
+		dead.emit()
 		queue_free()
 
 func shoot():
