@@ -4,8 +4,9 @@ extends Node2D
 @export var cardScene:PackedScene
 var roundTick=0
 var screen_size
-var enemies={0:1,5:1,10:1,15:1,20:1,40:2,50:2}
+var enemies={0:1,5:1,10:1,15:1,20:1,100:2,150:2}
 var enemyCount:int
+var liveEnemies=0
 
 
 var playerFireCooldown=0.25 #done
@@ -40,6 +41,7 @@ func start_round():
 	get_node('Player/ShootCooldown').wait_time=playerFireCooldown
 	$Player.start()
 	roundTick=0
+	liveEnemies=0
 	$RoundTimer.start()
 	enemyCount=len(enemies.keys())
 
@@ -50,9 +52,14 @@ func start_round():
 # call to start round $RoundTimer.start()
 
 func spawnRound():
+	if liveEnemies==0:roundTick=enemies.keys().filter(func(number): return number>roundTick).min()
 	if roundTick in enemies.keys():
-		if enemies[roundTick]==1:spawn_enemy1()
-		elif enemies[roundTick]==2:spawn_enemy2()
+		if enemies[roundTick]==1:
+			spawn_enemy1()
+			liveEnemies+=1
+		elif enemies[roundTick]==2:
+			spawn_enemy2()
+			liveEnemies+=1
 	roundTick+=1
 
 func spawn_enemy1():
@@ -77,6 +84,7 @@ func spawn_enemy2():
 
 func on_enemy_death():
 	enemyCount-=1
+	liveEnemies-=1
 	if enemyCount==0:
 		upgradeMenu()
 
