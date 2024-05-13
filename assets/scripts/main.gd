@@ -76,7 +76,7 @@ func spawn_enemy2():
 	enemy.position=Vector2(randi_range(40,screen_size.x-40),-32)
 	enemy.move=Vector2([-enemy2Speed,enemy2Speed][randi_range(0,1)],enemy2Speed)
 	enemy.bulletSpeed=enemy2BulletSpeed
-	enemy.numSpikes=int(enemy2Spikes)
+	enemy.numSpikes=max(int(enemy2Spikes),1)
 	enemy.spin=enemy2Spin
 	enemy.dead.connect(on_enemy_death)
 	enemy.get_node('ShootTimer').wait_time=enemy2FireCooldown
@@ -115,11 +115,12 @@ func upgradeMenu():
 			'enemy2Spin':['enemy2 spin speed',1,1],
 			'enemy2FireCooldown':['enemy2 fire rate',1,0]}
 		var upside=stats.keys().pick_random()
+		while (upside=='enemy2Spikes' and enemy2Spikes<2) or (upside in ['playerSpeed','playerBulletSpeed'] and get(upside)>1000):upside=stats.keys().pick_random()
 		const powers=[[0.9,1.1],[0.8,1.25],[0.67,1.5],[0.5,2],[0.4,2.5]]
 		var upsidePower=x+randi_range(1,2)
 		card.get_node("Upsides").text='x'+str(powers[upsidePower][stats[upside][2]])+' '+stats[upside][0]
 		var downside=upside
-		while downside==upside:downside=stats.keys().pick_random()
+		while downside==upside or ('speed' in downside and get(downside)>1000 and downside not in ['playerSpeed','playerBulletSpeed']):downside=stats.keys().pick_random()
 		var downsidePower=upsidePower-randi_range(0,1)
 		card.get_node("Downsides").text='x'+str(powers[downsidePower][stats[downside][2]*-1+1])+' '+stats[downside][0]
 		card.position=Vector2(screen_size.x/2-432+288*x,screen_size.y/2-168)
