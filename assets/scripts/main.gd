@@ -8,21 +8,21 @@ var enemies={0:1,5:1,10:1,15:1,20:1,100:2,150:2}
 var enemyCount:int
 var liveEnemies=0
 
+var upgradeStats={
+	'playerFireCooldown':0.25,
+	'playerHealth':5, 
+	'playerBulletSpeed':300, 
+	'playerSpeed':400,
 
-var playerFireCooldown=0.25 #done
-var playerHealth=5 #done
-var playerBulletSpeed=300 #done
-var playerSpeed=400
+	'enemy1Speed':150,
+	'enemy1BulletSpeed':200,
+	'enemy1FireCooldown':1,
 
-var enemy1Speed=150 #done
-var enemy1BulletSpeed=200 #done
-var enemy1FireCooldown=1 #done
-
-var enemy2Spikes=4 #done
-var enemy2Speed=150 #done
-var enemy2BulletSpeed=200 #done
-var enemy2Spin=PI
-var enemy2FireCooldown=1.75 #done
+	'enemy2Spikes':4,
+	'enemy2Speed':150,
+	'enemy2BulletSpeed':200,
+	'enemy2Spin':PI,
+	'enemy2FireCooldown':1.75}
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	screen_size = get_viewport_rect().size
@@ -35,10 +35,10 @@ func _process(delta):
 	if Input.is_action_just_pressed("debug_spawn_enemy2"):spawn_enemy2()
 
 func start_round():
-	$Player.maxHealth=playerHealth
-	$Player.bulletSpeed=playerBulletSpeed
-	$Player.speed=playerSpeed
-	get_node('Player/ShootCooldown').wait_time=playerFireCooldown
+	$Player.maxHealth=upgradeStats['playerHealth']
+	$Player.bulletSpeed=upgradeStats['playerBulletSpeed']
+	$Player.speed=upgradeStats['playerSpeed']
+	get_node('Player/ShootCooldown').wait_time=upgradeStats['playerFireCooldown']
 	$Player.start()
 	roundTick=0
 	liveEnemies=0
@@ -66,20 +66,20 @@ func spawn_enemy1():
 	var direction=randi_range(0,1)
 	enemy.position=Vector2([-16,screen_size.x+16][direction],0)
 	enemy.dead.connect(on_enemy_death)
-	enemy.moveSpeed=enemy1Speed*(direction*-2+1)
-	enemy.bulletSpeed=enemy1BulletSpeed
-	enemy.FireCooldown=enemy1FireCooldown
+	enemy.moveSpeed=upgradeStats['enemy1Speed']*(direction*-2+1)
+	enemy.bulletSpeed=upgradeStats['enemy1BulletSpeed']
+	enemy.FireCooldown=upgradeStats['enemy1FireCooldown']
 	add_child(enemy)
 
 func spawn_enemy2():
 	var enemy=enemy2.instantiate()
 	enemy.position=Vector2(randi_range(40,screen_size.x-40),-32)
-	enemy.move=Vector2([-enemy2Speed,enemy2Speed][randi_range(0,1)],enemy2Speed)
-	enemy.bulletSpeed=enemy2BulletSpeed
-	enemy.numSpikes=max(int(enemy2Spikes),1)
-	enemy.spin=enemy2Spin
+	enemy.move=Vector2(upgradeStats['enemy2Speed']*[-1,1][randi_range(0,1)],upgradeStats['enemy2Speed'])
+	enemy.bulletSpeed=upgradeStats['enemy2BulletSpeed']
+	enemy.numSpikes=max(int(upgradeStats['enemy2Spikes']),1)
+	enemy.spin=upgradeStats['enemy2Spin']
 	enemy.dead.connect(on_enemy_death)
-	enemy.get_node('ShootTimer').wait_time=enemy2FireCooldown
+	enemy.get_node('ShootTimer').wait_time=upgradeStats['enemy2FireCooldown']
 	add_child(enemy)
 
 func on_enemy_death():
@@ -115,12 +115,12 @@ func upgradeMenu():
 			'enemy2Spin':['enemy2 spin speed',1,1],
 			'enemy2FireCooldown':['enemy2 fire rate',1,0]}
 		var upside=stats.keys().pick_random()
-		while (upside=='enemy2Spikes' and enemy2Spikes<2) or (upside in ['playerSpeed','playerBulletSpeed'] and get(upside)>1000):upside=stats.keys().pick_random()
+		while (upside=='enemy2Spikes' and upgradeStats['enemy2Spikes']<2) or (upside in ['playerSpeed','playerBulletSpeed'] and upgradeStats[upside]>1000):upside=stats.keys().pick_random()
 		const powers=[[0.9,1.1],[0.8,1.25],[0.67,1.5],[0.5,2],[0.4,2.5]]
 		var upsidePower=x+randi_range(1,2)
 		card.get_node("Upsides").text='x'+str(powers[upsidePower][stats[upside][2]])+' '+stats[upside][0]
 		var downside=upside
-		while downside==upside or ('speed' in downside and get(downside)>1000 and downside not in ['playerSpeed','playerBulletSpeed']):downside=stats.keys().pick_random()
+		while downside==upside or ('speed' in downside and upgradeStats[downside]>1000 and downside not in ['playerSpeed','playerBulletSpeed']):downside=stats.keys().pick_random()
 		var downsidePower=upsidePower-randi_range(0,1)
 		card.get_node("Downsides").text='x'+str(powers[downsidePower][stats[downside][2]*-1+1])+' '+stats[downside][0]
 		card.position=Vector2(screen_size.x/2-432+288*x,screen_size.y/2-168)
@@ -133,7 +133,7 @@ func card_clicked(card):
 	var meta=card.get_meta('Powers')
 	print(meta)
 	print(get(meta[0]))
-	set(meta[0],get(meta[0])*meta[1]) #set upside
-	set(meta[2],get(meta[2])*meta[3]) #set downside
+	upgradeStats[meta[0]]*=meta[1] #set upside
+	upgradeStats[meta[2]]*=meta[3] #set downside
 	card.get_parent().queue_free()
 	start_round()
