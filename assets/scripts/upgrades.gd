@@ -11,7 +11,7 @@ var enemy2Spikes=4
 var enemy2Speed=150
 var enemy2Spin=PI
 var enemy2FireCooldown=1.75
-var enemy2SpikeSize
+#var enemy2SpikeSize
 
 # Called when the node enters the scene tree for the first time.
 func _ready():

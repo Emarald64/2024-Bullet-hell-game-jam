@@ -83,6 +83,8 @@ func _on_body_entered(_body):
 func start():
 	velocity=Vector2.ZERO
 	dead=false
+	health=maxHealth
+	update_health_bar()
 	#speedmod=0
 	#dashmod=0
 	show()

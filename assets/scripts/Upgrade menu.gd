@@ -20,7 +20,7 @@ func _ready():
 			'enemy1FireCooldown':["enemy1 fire rate",1,0],
 			'enemy2Spikes':['enemy2 spikes',0,0],
 			'enemy2Speed':['enemy2 speed',0,0],
-			'enemy2Spin':['enemy2 spin speed',1,1],
+			#'enemy2Spin':['enemy2 spin speed',1,1],
 			'enemy2FireCooldown':['enemy2 fire rate',1,0]}
 		var upside=stats.keys().pick_random()
 		const powers=[[0.9,1.1],[0.8,1.25],[0.67,1.5],[0.5,2],[0.4,2.5]]

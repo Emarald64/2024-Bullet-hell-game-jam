@@ -1,14 +1,16 @@
-[gd_scene load_steps=5 format=3 uid="uid://berkivgxxdxm2"]
+[gd_scene load_steps=6 format=3 uid="uid://berkivgxxdxm2"]
 
 [ext_resource type="PackedScene" uid="uid://ddsluc837b12v" path="res://scenes/player.tscn" id="1_7w1kc"]
 [ext_resource type="Script" path="res://assets/scripts/main.gd" id="1_61dcd"]
 [ext_resource type="PackedScene" uid="uid://dtc131qajh4lj" path="res://scenes/enemy_1.tscn" id="2_owtky"]
 [ext_resource type="PackedScene" uid="uid://ddxp4fxr8xp4f" path="res://scenes/enemy_2.tscn" id="3_3byxl"]
+[ext_resource type="PackedScene" uid="uid://cg5fk4luc0mlb" path="res://scenes/card.tscn" id="4_u73dw"]
 
 [node name="main" type="Node2D"]
 script = ExtResource("1_61dcd")
 enemy1 = ExtResource("2_owtky")
 enemy2 = ExtResource("3_3byxl")
+cardScene = ExtResource("4_u73dw")
 
 [node name="Player" parent="." instance=ExtResource("1_7w1kc")]
 position = Vector2(629, 501)
