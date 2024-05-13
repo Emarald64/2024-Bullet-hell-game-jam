@@ -16,7 +16,7 @@ func _ready():
 			'playerBulletSpeed':['bullet speed',1,1],
 			'playerSpeed':['Speed',1,1],
 			'enemy1Speed':['enemy1 speed',0,0],
-			'enemy1BulletSpeed':['enemy1 Bullet Speed',0,0],
+			'enemy1BulletSpeed':['enemy1 bullet speed',0,0],
 			'enemy1FireCooldown':["enemy1 fire rate",1,0],
 			'enemy2Spikes':['enemy2 spikes',0,0],
 			'enemy2Speed':['enemy2 speed',0,0],
@@ -30,9 +30,14 @@ func _ready():
 		while downside==upside:downside=stats.keys().pick_random()
 		var downsidePower=upsidePower-randi_range(0,1)
 		card.get_node("Text container/Downsides").text='x'+str(powers[downsidePower][stats[downside][2]*-1+1])+' '+stats[downside][0]
-		card.position=Vector2(screen_size.x/2-384+256*x,screen_size.y/2-168)
+		card.position=Vector2(screen_size.x/2-432+288*x,screen_size.y/2-168)
+		card.set_meta('Powers',[upside,powers[upsidePower][stats[upside][1]],downside,powers[downsidePower][stats[downside][1]*-1+1]])
+		card.get_node('Button').pressed.connect(card_clicked.bind(card))
 		add_child(card)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
+#func _process(delta):
+	#pass
+
+func card_clicked(card):
 	pass

@@ -7,6 +7,7 @@
 [node name="Card" type="TextureRect"]
 scale = Vector2(4, 4)
 texture = ExtResource("1_oviof")
+metadata/powers = []
 
 [node name="Card Icon" type="TextureRect" parent="."]
 visible = false
@@ -39,7 +40,6 @@ offset_top = 8.0
 offset_right = 231.0
 offset_bottom = 282.0
 scale = Vector2(0.25, 0.25)
-alignment = 1
 
 [node name="Upsides" type="Label" parent="Text container"]
 layout_mode = 2
@@ -54,3 +54,9 @@ theme_override_colors/font_color = Color(0.792157, 0, 0, 1)
 theme_override_font_sizes/font_size = 25
 text = "- No random crits"
 autowrap_mode = 3
+
+[node name="Button" type="Button" parent="."]
+layout_mode = 0
+offset_right = 64.0
+offset_bottom = 86.0
+flat = true
