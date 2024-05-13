@@ -55,4 +55,7 @@ func shoot():
 
 func _on_body_entered(body):
 	body.queue_free()
+	if numSpikes==0:
+		dead.emit()
+		queue_free()
 	# add effect to show bullet deletion
