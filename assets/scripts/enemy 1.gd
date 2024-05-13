@@ -5,12 +5,13 @@ var bulletSpeed=200
 var screen_size
 var dieing=false
 var spawning=true
+var FireCooldown=1
 @export var bulletScene: PackedScene
 signal dead
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	screen_size = get_viewport_rect().size
-	await get_tree().create_timer(randf_range(1,2)).timeout
+	await get_tree().create_timer(randf_range(0,FireCooldown)).timeout
 	$BulletTimer.start()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

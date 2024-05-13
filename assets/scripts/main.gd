@@ -52,7 +52,6 @@ func start_round():
 # call to start round $RoundTimer.start()
 
 func spawnRound():
-	if liveEnemies==0:roundTick=enemies.keys().filter(func(number): return number>roundTick).min()
 	if roundTick in enemies.keys():
 		if enemies[roundTick]==1:
 			spawn_enemy1()
@@ -64,11 +63,12 @@ func spawnRound():
 
 func spawn_enemy1():
 	var enemy=enemy1.instantiate()
-	enemy.position=Vector2(-16,0)
+	var direction=randi_range(0,1)
+	enemy.position=Vector2([-16,screen_size.x+16][direction],0)
 	enemy.dead.connect(on_enemy_death)
-	enemy.moveSpeed=enemy1Speed
+	enemy.moveSpeed=enemy1Speed*(direction*-2+1)
 	enemy.bulletSpeed=enemy1BulletSpeed
-	enemy.get_node('BulletTimer').wait_time=enemy1FireCooldown
+	enemy.FireCooldown=enemy1FireCooldown
 	add_child(enemy)
 
 func spawn_enemy2():
@@ -86,7 +86,9 @@ func on_enemy_death():
 	enemyCount-=1
 	liveEnemies-=1
 	if enemyCount==0:
+		$RoundTimer.stop()
 		upgradeMenu()
+	elif liveEnemies==0:roundTick=enemies.keys().filter(func(number): return number>roundTick).min()
 
 func upgradeMenu():
 	var background=ColorRect.new()

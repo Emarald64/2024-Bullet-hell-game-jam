@@ -17,7 +17,8 @@ func _ready():
 	for x in range(numSpikes):
 		var spike=spikeScene.instantiate()
 		spike.rotation=(x*TAU/numSpikes)-PI/2
-		spike.position=Vector2(cos(x*TAU/numSpikes),sin(x*TAU/numSpikes))*40
+		spike.position=Vector2(cos(x*TAU/numSpikes),sin(x*TAU/numSpikes))*41
+		spike.scale=Vector2(1.5,1.5)
 		spike.body_entered.connect(on_spike_hit.bind(spike))
 		spikes.append(spike)
 		add_child(spike)
