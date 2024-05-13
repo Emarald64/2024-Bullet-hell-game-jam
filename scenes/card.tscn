@@ -9,6 +9,7 @@ scale = Vector2(4, 4)
 texture = ExtResource("1_oviof")
 
 [node name="Card Icon" type="TextureRect" parent="."]
+visible = false
 layout_mode = 0
 offset_left = 7.0
 offset_top = 6.0
@@ -19,6 +20,7 @@ expand_mode = 1
 stretch_mode = 5
 
 [node name="Card Frame" type="TextureRect" parent="."]
+visible = false
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
@@ -33,19 +35,22 @@ texture = ExtResource("3_xs57e")
 [node name="Text container" type="VBoxContainer" parent="."]
 layout_mode = 0
 offset_left = 4.0
-offset_top = 46.0
+offset_top = 8.0
 offset_right = 231.0
-offset_bottom = 227.0
+offset_bottom = 282.0
 scale = Vector2(0.25, 0.25)
+alignment = 1
 
 [node name="Upsides" type="Label" parent="Text container"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 0.505882, 0, 1)
-theme_override_font_sizes/font_size = 20
+theme_override_font_sizes/font_size = 25
 text = "+ Insta win"
+autowrap_mode = 3
 
 [node name="Downsides" type="Label" parent="Text container"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.792157, 0, 0, 1)
-theme_override_font_sizes/font_size = 20
+theme_override_font_sizes/font_size = 25
 text = "- No random crits"
+autowrap_mode = 3

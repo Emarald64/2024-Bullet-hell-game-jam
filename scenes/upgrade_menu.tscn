@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://nsv3mx1b8tx0"]
+
+[ext_resource type="Script" path="res://assets/scripts/Upgrade menu.gd" id="1_vdb3e"]
+[ext_resource type="PackedScene" uid="uid://cg5fk4luc0mlb" path="res://scenes/card.tscn" id="2_tdw3m"]
+
+[node name="Upgrade menu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_vdb3e")
+cardScene = ExtResource("2_tdw3m")

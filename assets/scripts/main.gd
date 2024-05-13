@@ -36,16 +36,17 @@ func spawnRound():
 func spawn_enemy1():
 	var enemy=enemy1.instantiate()
 	enemy.position=Vector2(-16,0)
+	enemy.dead.connect(on_enemy_death)
 	add_child(enemy)
 
 func spawn_enemy2():
 	var enemy=enemy2.instantiate()
 	enemy.position=Vector2(randi_range(40,screen_size.x-40),-32)
 	enemy.move=Vector2([-150,150][randi_range(0,1)],150)
-	enemy.dead.connect()
+	enemy.dead.connect(on_enemy_death)
 	add_child(enemy)
 
 func on_enemy_death():
 	enemyCount-=1
 	if enemyCount==0:
-		
+		print('you win!')
