@@ -9,7 +9,7 @@ var enemyCount:int
 var liveEnemies=0
 
 var upgradeStats={
-	'playerFireCooldown':0.1,
+	'playerFireCooldown':0.25,
 	'playerHealth':5, 
 	'playerBulletSpeed':300, 
 	'playerSpeed':400,
@@ -19,7 +19,7 @@ var upgradeStats={
 	'enemy1FireCooldown':1,
 
 	'enemy2Spikes':4,
-	'enemy2Speed':150,
+	'enemy2Speed':250,
 	'enemy2BulletSpeed':200,
 	'enemy2Spin':PI,
 	'enemy2FireCooldown':1.75}
@@ -75,6 +75,7 @@ func spawn_enemy2():
 	var enemy=enemy2.instantiate()
 	enemy.position=Vector2(randi_range(40,screen_size.x-40),-32)
 	enemy.move=Vector2(upgradeStats['enemy2Speed']*[-1,1][randi_range(0,1)],upgradeStats['enemy2Speed'])
+	enemy.moveSpeed=upgradeStats['enemy2Speed']
 	enemy.bulletSpeed=upgradeStats['enemy2BulletSpeed']
 	enemy.numSpikes=max(int(upgradeStats['enemy2Spikes']),1)
 	enemy.spin=upgradeStats['enemy2Spin']

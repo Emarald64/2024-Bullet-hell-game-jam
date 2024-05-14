@@ -1,6 +1,7 @@
 extends Area2D
 
 var move:Vector2
+var moveSpeed
 var bulletSpeed=200
 var screen_size
 var dieing=false
@@ -30,8 +31,10 @@ func _process(delta):
 	if spawning:
 		if position.y>0:spawning=false
 	else:
-		if position.x<0 or position.x>screen_size.x:move.x*=-1
-		if position.y<0 or position.y>screen_size.y:move.y*=-1
+		if position.x<0:move.x=moveSpeed
+		elif position.x>screen_size.x:move.x=-moveSpeed
+		if position.y<0:move.y=moveSpeed
+		elif position.y>screen_size.y:move.y=-moveSpeed
 	rotation+=spin*delta
 
 func on_spike_hit(body,spike):
