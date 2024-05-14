@@ -10,6 +10,7 @@ size = Vector2(16, 24)
 modulate = Color(0.862745, 1, 0.368627, 1)
 collision_mask = 0
 script = ExtResource("1_d0om8")
+metadata/bullet = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_kjyc4")

@@ -9,7 +9,7 @@ var enemyCount:int
 var liveEnemies=0
 
 var upgradeStats={
-	'playerFireCooldown':0.25,
+	'playerFireCooldown':0.1,
 	'playerHealth':5, 
 	'playerBulletSpeed':300, 
 	'playerSpeed':400,
@@ -86,6 +86,8 @@ func on_enemy_death():
 	enemyCount-=1
 	liveEnemies-=1
 	if enemyCount==0:
+		for node in get_children():
+			if node.get_meta('bullet', false):node.queue_free()
 		$RoundTimer.stop()
 		upgradeMenu()
 	elif liveEnemies==0:roundTick=enemies.keys().filter(func(number): return number>roundTick).min()

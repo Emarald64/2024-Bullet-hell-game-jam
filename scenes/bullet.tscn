@@ -11,6 +11,7 @@ collision_mask = 0
 gravity_scale = 0.0
 linear_damp_mode = 1
 script = ExtResource("1_r4veb")
+metadata/bullet = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_cs0ja")
