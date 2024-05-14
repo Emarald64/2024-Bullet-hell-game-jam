@@ -4,7 +4,7 @@ extends Node2D
 @export var cardScene:PackedScene
 var roundTick=0
 var screen_size
-var enemies={0:1,5:1,10:1,15:1,20:1,100:2,150:2}
+var enemies={0:1,5:1}
 var enemyCount:int
 var liveEnemies=0
 var round=0
@@ -146,4 +146,5 @@ func card_clicked(card):
 
 func _on_player_death():
 	$DeathScreen/Score.text='Score: '+str(round)
-	$AnimationPlayer.play()
+	$AnimationPlayer.play('Show Death Screen')
+	

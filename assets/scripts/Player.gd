@@ -9,7 +9,7 @@ var bulletSpeed=300
 var speed=400.0
 var screen_size
 var play_size
-var dead
+var dead:bool
 var health=5
 var maxHealth=5
 var dashing=false
@@ -26,30 +26,29 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	if not $DashTimer.time_left>=0.1:
-		velocity/=Friction
-		if Input.is_action_pressed("move_right"):
-			velocity.x += speed/AccelerationDivider
-		if Input.is_action_pressed("move_left"):
-			velocity.x -= speed/AccelerationDivider
-		if Input.is_action_pressed("move_down"):
-			velocity.y += speed/AccelerationDivider
-		if Input.is_action_pressed("move_up"):
-			velocity.y -= speed/AccelerationDivider
-		if Input.is_action_pressed("shoot") and $ShootCooldown.is_stopped():
-			var bullet = bulletScene.instantiate()
-			bullet.position=position
-			bullet.linear_velocity=Vector2(0,-bulletSpeed)
-			get_parent().add_child(bullet)
-			$ShootCooldown.start()
-		#if Input.is_action_just_pressed("dash") and velocity.length() > 0 and $DashCooldown.is_stopped():
-			#dash.emit()
-			#dashing=true
-			#velocity*=2+(dashmod/2.0)
-			#$DashTimer.start()
-			#invincible = true
-			#if velocity.length()<speed/2:
-				#velocity*=speed/2/velocity.length()
+	velocity/=Friction
+	if Input.is_action_pressed("move_right"):
+		velocity.x += speed/AccelerationDivider
+	if Input.is_action_pressed("move_left"):
+		velocity.x -= speed/AccelerationDivider
+	if Input.is_action_pressed("move_down"):
+		velocity.y += speed/AccelerationDivider
+	if Input.is_action_pressed("move_up"):
+		velocity.y -= speed/AccelerationDivider
+	if Input.is_action_pressed("shoot") and $ShootCooldown.is_stopped():
+		var bullet = bulletScene.instantiate()
+		bullet.position=position
+		bullet.linear_velocity=Vector2(0,-bulletSpeed)
+		get_parent().add_child(bullet)
+		$ShootCooldown.start()
+	#if Input.is_action_just_pressed("dash") and velocity.length() > 0 and $DashCooldown.is_stopped():
+		#dash.emit()
+		#dashing=true
+		#velocity*=2+(dashmod/2.0)
+		#$DashTimer.start()
+		#invincible = true
+		#if velocity.length()<speed/2:
+			#velocity*=speed/2/velocity.length()
 
 	if dead!=true:
 		#if velocity.x>2:velocity.x=2
@@ -66,6 +65,7 @@ func _on_body_entered(_body):
 		update_health_bar()
 		$HitSound.play()
 		if health<=0:
+			dead=true
 			death.emit()
 		$InvincibleTimer.start()
 		self.modulate=Color(1.0,1.0,1.0,0.5)
@@ -92,8 +92,9 @@ func start():
 	
 
 func _on_invincibility_timer_timeout():
-	self.modulate=Color(1.0,1.0,1.0,1.0)
-	if not dashing:invincible = false
+	if not dead:
+		self.modulate=Color(1.0,1.0,1.0,1.0)
+		invincible = false
 
 
 #func _on_dash_end():
