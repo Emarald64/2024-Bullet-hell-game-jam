@@ -64,7 +64,7 @@ func spawnRound():
 func spawn_enemy1():
 	var enemy=enemy1.instantiate()
 	var direction=randi_range(0,1)
-	enemy.position=Vector2([-16,screen_size.x+16][direction],0)
+	enemy.position=Vector2([-16,screen_size.x+16][direction],16)
 	enemy.dead.connect(on_enemy_death)
 	enemy.moveSpeed=upgradeStats['enemy1Speed']*(direction*-2+1)
 	enemy.bulletSpeed=upgradeStats['enemy1BulletSpeed']

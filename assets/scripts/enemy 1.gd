@@ -6,10 +6,13 @@ var screen_size
 var dieing=false
 var spawning=true
 var FireCooldown=1
+var maxHealth=3
+var health=3
 @export var bulletScene: PackedScene
 signal dead
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	health=maxHealth
 	screen_size = get_viewport_rect().size
 	await get_tree().create_timer(randf_range(0,FireCooldown)).timeout
 	$BulletTimer.start()
@@ -30,12 +33,15 @@ func _on_bullet_timer_timeout():
 
 
 func hit(body):
-	if not body.pierce or dieing:
-		body.queue_free()
-	dieing=true
-	$Sprite2D.hide()
-	$Explosion.show()
-	$Explosion.play()
+	health-=1
+	if not body.pierce and not dieing:
+			body.queue_free()
+	if health<=0:
+		dieing=true
+		$Sprite2D.hide()
+		$Explosion.show()
+		$Explosion.play()
+	else:$Sprite2D.modulate=Color(1,1,1,health/3.0)
 	
 
 
