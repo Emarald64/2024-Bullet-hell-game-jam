@@ -7,6 +7,7 @@ var screen_size
 var enemies={0:1,5:1,10:1,15:1,20:1,100:2,150:2}
 var enemyCount:int
 var liveEnemies=0
+var round=0
 
 var upgradeStats={
 	'playerFireCooldown':0.25,
@@ -139,4 +140,10 @@ func card_clicked(card):
 	upgradeStats[meta[0]]*=meta[1] #set upside
 	upgradeStats[meta[2]]*=meta[3] #set downside
 	card.get_parent().queue_free()
+	round+=1
 	start_round()
+
+
+func _on_player_death():
+	$DeathScreen/Score.text='Score: '+str(round)
+	$AnimationPlayer.play()

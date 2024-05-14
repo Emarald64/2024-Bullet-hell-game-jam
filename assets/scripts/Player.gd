@@ -1,5 +1,5 @@
 extends Area2D
-signal dash
+signal death
 
 @export var AccelerationDivider=3
 @export var SpeedMultipier=800
@@ -64,10 +64,11 @@ func _on_body_entered(_body):
 	if not invincible:
 		health-=1
 		update_health_bar()
+		$HitSound.play()
+		if health<=0:
+			death.emit()
 		$InvincibleTimer.start()
 		self.modulate=Color(1.0,1.0,1.0,0.5)
-		$HitSound.play()
-		# Must be deferred as we can't change physics properties on a physics callback.
 		invincible=true
 #const powers=['health','dash','speed']
 	#elif body.get_meta('OnHit')=='power':
@@ -81,7 +82,7 @@ func _on_body_entered(_body):
 		#body.queue_free()
 	
 func start():
-	velocity=Vector2.ZERO
+	#velocity=Vector2.ZERO
 	dead=false
 	health=maxHealth
 	update_health_bar()
