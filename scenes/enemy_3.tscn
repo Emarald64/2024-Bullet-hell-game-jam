@@ -82,5 +82,6 @@ frame_progress = 1.0
 shape = SubResource("CircleShape2D_vl4ii")
 disabled = true
 
+[connection signal="body_entered" from="." to="." method="start_exploasion"]
 [connection signal="timeout" from="ExplosionTimer" to="." method="_on_explosion_timer_timeout"]
 [connection signal="animation_finished" from="Explosion" to="." method="_on_explosion_animation_finished"]

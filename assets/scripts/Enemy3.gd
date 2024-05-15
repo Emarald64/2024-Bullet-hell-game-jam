@@ -14,6 +14,7 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
+	$Sprite2D.rotation=velocity.angle()+(3*PI/4)
 	position+=velocity*delta
 	if not exploading:
 		velocity+=(player.position-position).normalized()*speed*delta
@@ -23,9 +24,11 @@ func _process(delta):
 		print("hiss")
 		$ExplosionTimer.start()
 
+func start_exploasion(body):
+	exploading=true
+	$ExplosionTimer.start()
 
 func _on_explosion_timer_timeout():
-	print('BOOM')
 	$ExplosionCollision.disabled=false
 	$Explosion.play()
 	$Explosion.show()

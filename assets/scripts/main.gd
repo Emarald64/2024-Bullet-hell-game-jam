@@ -5,10 +5,10 @@ extends Node2D
 @export var cardScene:PackedScene
 var roundTick=0
 var screen_size
-var enemies={0:1,5:1}
+var enemies={0:3}
 var enemyCount:int
 var liveEnemies=0
-var round=0
+var roundNumber=0
 
 var upgradeStats={
 	'playerFireCooldown':0.25,
@@ -32,7 +32,7 @@ func _ready():
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
+func _process(_delta):
 	if Input.is_action_just_pressed("debug_spawn_enemy1"):spawn_enemy1()
 	if Input.is_action_just_pressed("debug_spawn_enemy2"):spawn_enemy2()
 	if Input.is_action_just_pressed("debug_spawn_enemy3"):spawn_enemy3()
@@ -44,7 +44,7 @@ func start_round():
 	$Player.start()
 	roundTick=0
 	liveEnemies=0
-	#$RoundTimer.start()
+	$RoundTimer.start()
 	enemyCount=len(enemies.keys())
 
 # round layout
@@ -60,6 +60,9 @@ func spawnRound():
 			liveEnemies+=1
 		elif enemies[roundTick]==2:
 			spawn_enemy2()
+			liveEnemies+=1
+		elif enemies[roundTick]==3:
+			spawn_enemy3()
 			liveEnemies+=1
 	roundTick+=1
 
@@ -87,7 +90,9 @@ func spawn_enemy2():
 
 func spawn_enemy3():
 	var enemy=enemy3.instantiate()
+	enemy.position=Vector2(-100 if $Player.position.x>screen_size.x/2 else screen_size.x+100,-100)
 	enemy.player=$Player
+	enemy.dead.connect(on_enemy_death)
 	add_child(enemy)
 
 func on_enemy_death():
@@ -141,16 +146,14 @@ func upgradeMenu():
 
 func card_clicked(card):
 	var meta=card.get_meta('Powers')
-	print(meta)
-	print(get(meta[0]))
 	upgradeStats[meta[0]]*=meta[1] #set upside
 	upgradeStats[meta[2]]*=meta[3] #set downside
 	card.get_parent().queue_free()
-	round+=1
+	roundNumber+=1
 	start_round()
 
 
 func _on_player_death():
-	$DeathScreen/Score.text='Score: '+str(round)
+	$DeathScreen/Score.text='Score: '+str(roundNumber)
 	$AnimationPlayer.play('Show Death Screen')
 	
