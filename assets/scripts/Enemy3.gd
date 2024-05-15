@@ -8,10 +8,10 @@ var velocity:Vector2=Vector2.ZERO
 var explosionDelay=1
 var exploading=false
 var lastRotation=0
+var lastPosition=Vector2.ZERO
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.
-
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -20,13 +20,17 @@ func _process(delta):
 	if not exploading:
 		velocity+=(player.position-position).normalized()*speed*delta
 	else:rotation=lastRotation+($ExplosionTimer.time_left/explosionDelay*TAU)
+	#velocity*=0.5**(0.5*friction*delta)
 	velocity*=1/(1+(delta*friction))
 	
-	draw_line(position,(velocity/(1+(friction*explosionDelay)))+position,Color.WHITE)
-	if ((velocity/(1+(friction*explosionDelay)))+position).distance_to(player.position)<150 and not exploading:
+	#debug circle
+	if not exploading:DebugDraw2D.circle((velocity*0.5**(0.5*friction*explosionDelay))+position,150)
+	if exploading:DebugDraw2D.circle(lastPosition,64)
+	if (velocity*0.5**(0.5*friction*explosionDelay))+position.distance_to(player.position)<150 and not exploading:
 		print('hiss')
 		exploading=true
 		lastRotation=rotation
+		lastPosition=(velocity*0.5**(0.5*friction*explosionDelay))+position
 		$ExplosionTimer.start()
 
 func start_exploasion(body):
