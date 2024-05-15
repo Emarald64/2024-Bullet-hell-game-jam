@@ -38,6 +38,7 @@ func hit(body):
 			body.queue_free()
 	if health<=0:
 		dieing=true
+		dead.emit()
 		$Sprite2D.hide()
 		$Explosion.show()
 		$Explosion.play()
@@ -46,5 +47,4 @@ func hit(body):
 
 
 func _on_animated_sprite_2d_animation_finished():
-	dead.emit()
 	queue_free()

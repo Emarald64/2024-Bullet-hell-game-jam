@@ -1,12 +1,52 @@
-[gd_scene load_steps=6 format=3 uid="uid://ddxp4fxr8xp4f"]
+[gd_scene load_steps=15 format=3 uid="uid://ddxp4fxr8xp4f"]
 
 [ext_resource type="Texture2D" uid="uid://cja285736trkc" path="res://assets/sprites/circle.svg" id="1_1u62b"]
 [ext_resource type="Script" path="res://assets/scripts/enemy_2.gd" id="1_bvf7a"]
 [ext_resource type="PackedScene" uid="uid://yka2g6rpoifl" path="res://scenes/bouncing_bullet.tscn" id="2_mcfi8"]
 [ext_resource type="PackedScene" uid="uid://0x663knd4u3e" path="res://scenes/enemy_spike.tscn" id="3_27cwi"]
+[ext_resource type="Texture2D" uid="uid://bws4kiwrku3qt" path="res://assets/sprites/enemies/explode/0001.png" id="5_w2alp"]
+[ext_resource type="Texture2D" uid="uid://b6hlpufcvesu8" path="res://assets/sprites/enemies/explode/0002.png" id="6_3micm"]
+[ext_resource type="Texture2D" uid="uid://cyhwbr7s78hei" path="res://assets/sprites/enemies/explode/0003.png" id="7_e3et2"]
+[ext_resource type="Texture2D" uid="uid://buope61qn72ws" path="res://assets/sprites/enemies/explode/0004.png" id="8_uelhr"]
+[ext_resource type="Texture2D" uid="uid://d0fpytunl0uj6" path="res://assets/sprites/enemies/explode/0005.png" id="9_fmvvy"]
+[ext_resource type="Texture2D" uid="uid://cy7o7c6kallxc" path="res://assets/sprites/enemies/explode/0006.png" id="10_wxd3p"]
+[ext_resource type="Texture2D" uid="uid://b4g36211qy4bc" path="res://assets/sprites/enemies/explode/0007.png" id="11_nqoo8"]
+[ext_resource type="Texture2D" uid="uid://1bbp8u7t6c3f" path="res://assets/sprites/enemies/explode/0008.png" id="12_wmtdw"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_61tkp"]
 radius = 33.0151
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_adjo8"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_w2alp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_3micm")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_e3et2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_uelhr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_fmvvy")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_wxd3p")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_nqoo8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_wmtdw")
+}],
+"loop": false,
+"name": &"default",
+"speed": 10.0
+}]
 
 [node name="Enemy2" type="Area2D"]
 collision_mask = 2
@@ -23,6 +63,12 @@ texture = ExtResource("1_1u62b")
 [node name="ShootTimer" type="Timer" parent="."]
 wait_time = 1.75
 autostart = true
+
+[node name="Explosion" type="AnimatedSprite2D" parent="."]
+position = Vector2(-3, -3.5)
+sprite_frames = SubResource("SpriteFrames_adjo8")
+frame = 7
+frame_progress = 1.0
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="timeout" from="ShootTimer" to="." method="shoot"]

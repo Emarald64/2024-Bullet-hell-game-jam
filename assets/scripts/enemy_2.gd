@@ -45,7 +45,13 @@ func on_spike_hit(body,spike):
 	if numSpikes==0:
 		# Add exploasion
 		dead.emit()
-		queue_free()
+		set_deferred('monitorable',false)
+		set_deferred('monitoring',false)
+		$Sprite2D.hide()
+		$Explosion.show()
+		$Explosion.play()
+		move=Vector2.ZERO
+		spin=0
 
 func shoot():
 	for spike in spikes:

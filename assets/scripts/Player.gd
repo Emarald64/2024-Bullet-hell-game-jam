@@ -1,9 +1,9 @@
 extends Area2D
 signal death
 
-@export var AccelerationDivider=3
-@export var SpeedMultipier=800
-@export var Friction=1.5
+@export var AccelerationMod=20
+#@export var SpeedMultipier=800
+@export var Friction=10
 @export var bulletScene :PackedScene
 var bulletSpeed=300
 var speed=400.0
@@ -27,15 +27,16 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	velocity/=Friction
-	if Input.is_action_pressed("move_right"):
-		velocity.x += speed/AccelerationDivider
-	if Input.is_action_pressed("move_left"):
-		velocity.x -= speed/AccelerationDivider
-	if Input.is_action_pressed("move_down"):
-		velocity.y += speed/AccelerationDivider
-	if Input.is_action_pressed("move_up"):
-		velocity.y -= speed/AccelerationDivider
+	velocity/=1+Friction*delta
+	velocity+= Input.get_vector('move_left','move_right','move_up','move_down')*speed*delta*AccelerationMod
+	#if Input.is_action_pressed("move_right"):
+		#velocity.x += speed/AccelerationDivider
+	#if Input.is_action_pressed("move_left"):
+		#velocity.x -= speed/AccelerationDivider
+	#if Input.is_action_pressed("move_down"):
+		#velocity.y += speed/AccelerationDivider
+	#if Input.is_action_pressed("move_up"):
+		#velocity.y -= speed/AccelerationDivider
 	if Input.is_action_pressed("shoot") and $ShootCooldown.is_stopped() and not dead:
 		var bullet = bulletScene.instantiate()
 		bullet.position=position

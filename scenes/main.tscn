@@ -6,7 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://ddxp4fxr8xp4f" path="res://scenes/enemy_2.tscn" id="3_3byxl"]
 [ext_resource type="PackedScene" uid="uid://cg5fk4luc0mlb" path="res://scenes/card.tscn" id="4_u73dw"]
 [ext_resource type="PackedScene" uid="uid://dipmwycpankph" path="res://scenes/death_screen.tscn" id="6_6axhp"]
-[ext_resource type="PackedScene" uid="uid://buqhadcuh4rk5" path="res://scenes/enemy_3.tscn" id="7_seb7a"]
+[ext_resource type="PackedScene" uid="uid://d2geabru1tw8w" path="res://scenes/enemy_3.tscn" id="7_seb7a"]
 
 [sub_resource type="Animation" id="Animation_1pfoe"]
 length = 0.001

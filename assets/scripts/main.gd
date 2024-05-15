@@ -38,7 +38,7 @@ func _process(_delta):
 	if Input.is_action_just_pressed("debug_spawn_enemy3"):spawn_enemy3()
 func start_round():
 	const rounds=[
-		{0:3},
+		{0:2,1000:1},
 		{0:1,5:1,10:1,15:1,20:1},
 		{0:1,5:1,10:1,50:2},
 		{0:1,5:1,10:1,15:1,20:1,40:2,50:2,60:2},
