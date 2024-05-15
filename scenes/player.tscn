@@ -26,6 +26,7 @@ scale = Vector2(0.3, 0.3)
 shape = SubResource("RectangleShape2D_d8jxx")
 
 [node name="InvincibleTimer" type="Timer" parent="."]
+wait_time = 0.7
 one_shot = true
 
 [node name="HitSound" type="AudioStreamPlayer" parent="."]

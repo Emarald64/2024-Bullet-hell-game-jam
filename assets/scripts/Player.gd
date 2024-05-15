@@ -14,6 +14,7 @@ var health=5
 var maxHealth=5
 var dashing=false
 var velocity=Vector2.ZERO
+
 #var dashspeed
 #var speedmod=0
 #var dashmod=0
@@ -35,7 +36,7 @@ func _process(delta):
 		velocity.y += speed/AccelerationDivider
 	if Input.is_action_pressed("move_up"):
 		velocity.y -= speed/AccelerationDivider
-	if Input.is_action_pressed("shoot") and $ShootCooldown.is_stopped():
+	if Input.is_action_pressed("shoot") and $ShootCooldown.is_stopped() and not dead:
 		var bullet = bulletScene.instantiate()
 		bullet.position=position
 		bullet.linear_velocity=Vector2(0,-bulletSpeed)
