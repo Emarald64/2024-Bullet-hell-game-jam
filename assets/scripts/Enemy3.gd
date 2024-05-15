@@ -24,10 +24,9 @@ func _process(delta):
 	velocity*=1/(1+(delta*friction))
 	
 	#debug circle
-	if not exploading:DebugDraw2D.circle((velocity*0.5**(0.5*friction*explosionDelay))+position,150)
+	#if not exploading:DebugDraw2D.circle((velocity*0.5**(friction*explosionDelay))+position,100)
 	if exploading:DebugDraw2D.circle(lastPosition,64)
-	if (velocity*0.5**(0.5*friction*explosionDelay))+position.distance_to(player.position)<150 and not exploading:
-		print('hiss')
+	if ((velocity*0.5**(friction*explosionDelay))+position).distance_to(player.position)<100 and not exploading and not player.dead:
 		exploading=true
 		lastRotation=rotation
 		lastPosition=(velocity*0.5**(0.5*friction*explosionDelay))+position
@@ -37,13 +36,17 @@ func start_exploasion(body):
 	if not exploading:
 		exploading=true
 		lastRotation=rotation
+		lastPosition=(velocity*0.5**(0.5*friction*explosionDelay))+position
 		$ExplosionTimer.start()
 
 func _on_explosion_timer_timeout():
-	$ExplosionCollision.disabled=false
-	$Explosion.play()
-	$Explosion.show()
-	$Sprite2D.hide()
+	if player.dead:
+		exploading=false
+	else:
+		$ExplosionCollision.disabled=false
+		$Explosion.play()
+		$Explosion.show()
+		$Sprite2D.hide()
 
 
 func _on_explosion_animation_finished():

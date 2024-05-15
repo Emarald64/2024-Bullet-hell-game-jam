@@ -21,6 +21,7 @@ DebugDraw2D="*res://addons/debugdraw2d/DebugDraw2D.gd"
 
 [display]
 
+window/size/mode=2
 window/size/resizable=false
 window/stretch/mode="canvas_items"
 window/vsync/vsync_mode=0
