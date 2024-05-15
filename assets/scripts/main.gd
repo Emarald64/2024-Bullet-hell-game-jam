@@ -1,6 +1,7 @@
 extends Node2D
 @export var enemy1:PackedScene
 @export var enemy2:PackedScene
+@export var enemy3:PackedScene
 @export var cardScene:PackedScene
 var roundTick=0
 var screen_size
@@ -34,7 +35,7 @@ func _ready():
 func _process(delta):
 	if Input.is_action_just_pressed("debug_spawn_enemy1"):spawn_enemy1()
 	if Input.is_action_just_pressed("debug_spawn_enemy2"):spawn_enemy2()
-
+	if Input.is_action_just_pressed("debug_spawn_enemy3"):spawn_enemy3()
 func start_round():
 	$Player.maxHealth=upgradeStats['playerHealth']
 	$Player.bulletSpeed=upgradeStats['playerBulletSpeed']
@@ -43,7 +44,7 @@ func start_round():
 	$Player.start()
 	roundTick=0
 	liveEnemies=0
-	$RoundTimer.start()
+	#$RoundTimer.start()
 	enemyCount=len(enemies.keys())
 
 # round layout
@@ -82,6 +83,11 @@ func spawn_enemy2():
 	enemy.spin=upgradeStats['enemy2Spin']
 	enemy.dead.connect(on_enemy_death)
 	enemy.get_node('ShootTimer').wait_time=upgradeStats['enemy2FireCooldown']
+	add_child(enemy)
+
+func spawn_enemy3():
+	var enemy=enemy3.instantiate()
+	enemy.player=$Player
 	add_child(enemy)
 
 func on_enemy_death():

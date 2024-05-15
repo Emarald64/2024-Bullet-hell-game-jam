@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://berkivgxxdxm2"]
+[gd_scene load_steps=11 format=3 uid="uid://berkivgxxdxm2"]
 
 [ext_resource type="PackedScene" uid="uid://ddsluc837b12v" path="res://scenes/player.tscn" id="1_7w1kc"]
 [ext_resource type="Script" path="res://assets/scripts/main.gd" id="1_61dcd"]
@@ -6,21 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://ddxp4fxr8xp4f" path="res://scenes/enemy_2.tscn" id="3_3byxl"]
 [ext_resource type="PackedScene" uid="uid://cg5fk4luc0mlb" path="res://scenes/card.tscn" id="4_u73dw"]
 [ext_resource type="PackedScene" uid="uid://dipmwycpankph" path="res://scenes/death_screen.tscn" id="6_6axhp"]
-
-[sub_resource type="Animation" id="Animation_tueof"]
-resource_name = "Show Death Screen"
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("DeathScreen:modulate")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.5),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
-}
+[ext_resource type="PackedScene" uid="uid://buqhadcuh4rk5" path="res://scenes/enemy_3.tscn" id="7_seb7a"]
 
 [sub_resource type="Animation" id="Animation_1pfoe"]
 length = 0.001
@@ -37,6 +23,21 @@ tracks/0/keys = {
 "values": [Color(1, 1, 1, 0)]
 }
 
+[sub_resource type="Animation" id="Animation_tueof"]
+resource_name = "Show Death Screen"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("DeathScreen:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_w58xm"]
 _data = {
 "RESET": SubResource("Animation_1pfoe"),
@@ -47,6 +48,7 @@ _data = {
 script = ExtResource("1_61dcd")
 enemy1 = ExtResource("2_owtky")
 enemy2 = ExtResource("3_3byxl")
+enemy3 = ExtResource("7_seb7a")
 cardScene = ExtResource("4_u73dw")
 
 [node name="Player" parent="." instance=ExtResource("1_7w1kc")]
