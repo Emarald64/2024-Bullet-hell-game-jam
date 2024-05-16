@@ -72,6 +72,6 @@ disabled = true
 position = Vector2(2.08165e-12, 2.08165e-12)
 scale = Vector2(4.45, 4.6)
 
-[connection signal="body_entered" from="." to="." method="start_exploasion"]
+[connection signal="area_entered" from="." to="." method="start_exploasion"]
 [connection signal="timeout" from="ExplosionTimer" to="." method="_on_explosion_timer_timeout"]
 [connection signal="animation_finished" from="Explosion" to="." method="_on_explosion_animation_finished"]

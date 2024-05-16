@@ -26,8 +26,8 @@ func _process(delta):
 	velocity*=1/(1+(delta*friction))
 	
 	#debug circle
-	if not exploading:DebugDraw2D.circle((velocity*0.5**(friction*explosionDelay))+position,explosionSize/2)
-	else:DebugDraw2D.circle(lastPosition,explosionSize)
+	#if not exploading:DebugDraw2D.circle((velocity*0.5**(friction*explosionDelay))+position,explosionSize/2)
+	#else:DebugDraw2D.circle(lastPosition,explosionSize)
 	
 	if ((velocity*0.5**(friction*explosionDelay))+position).distance_to(player.position)<explosionSize/2 and not exploading and not player.dead and $VisibleOnScreenNotifier2D.is_on_screen():
 		exploading=true

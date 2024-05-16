@@ -8,7 +8,7 @@ var screen_size
 var enemies={0:3}
 var enemyCount:int
 var liveEnemies=0
-var roundNumber=0
+var roundNumber=4
 
 var upgradeStats={
 	'playerFireCooldown':0.25,
@@ -30,6 +30,9 @@ var upgradeStats={
 	'enemy3Delay':1,
 	'enemy3ExplosionSize':180,
 	}
+var specialUpgrades={
+	'shotgun':false
+}
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	screen_size = get_viewport_rect().size
@@ -43,13 +46,13 @@ func _process(_delta):
 	if Input.is_action_just_pressed("debug_spawn_enemy3"):spawn_enemy3()
 func start_round():
 	const rounds=[
-		{0:3},
 		{0:1,5:1,10:1,15:1,20:1},
 		{0:1,5:1,10:1,70:2},
 		{0:1,5:1,10:1,15:1,20:1,40:2,50:2},
 		{0:2,10:2,15:2,115:1,120:1,125:1,130:1,150:2},
 		{0:3,30:1,35:1,40:1,45:1,50:1,70:2,80:2,85:3,100:2},
 		{0:1,5:1,10:1,15:1,20:1,40:2,50:2,55:3,60:2,100:2,120:2,300:3,1000:3},
+		{},
 		{},
 		{},
 		{} #final
@@ -135,8 +138,6 @@ func upgradeMenu():
 	for x in range(3):
 		# create card
 		var card=cardScene.instantiate()
-		# create card stats
-		#upside
 		# vairable name:[common name,do(-/+),say(-/+)]
 		const stats={
 			'playerFireCooldown':['fire rate',0,1],

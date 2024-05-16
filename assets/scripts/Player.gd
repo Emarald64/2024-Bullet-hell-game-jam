@@ -40,7 +40,7 @@ func _process(delta):
 	if Input.is_action_pressed("shoot") and $ShootCooldown.is_stopped() and not dead:
 		var bullet = bulletScene.instantiate()
 		bullet.position=position
-		bullet.linear_velocity=Vector2(0,-bulletSpeed)
+		bullet.move=Vector2(0,-bulletSpeed)
 		get_parent().add_child(bullet)
 		$ShootCooldown.start()
 	#if Input.is_action_just_pressed("dash") and velocity.length() > 0 and $DashCooldown.is_stopped():
