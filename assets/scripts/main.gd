@@ -8,7 +8,7 @@ var screen_size
 var enemies={0:3}
 var enemyCount:int
 var liveEnemies=0
-var roundNumber=0
+var roundNumber=3
 
 const defaultUpgradeStats={
 	'playerFireCooldown':0.25,
@@ -31,7 +31,7 @@ const defaultUpgradeStats={
 	'enemy3ExplosionSize':180,
 	
 	#special
-	'shotgun':true
+	'shotgun':false
 	}
 var upgradeStats:Dictionary
 # Called when the node enters the scene tree for the first time.

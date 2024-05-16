@@ -37,21 +37,22 @@ func _process(delta):
 		elif position.y>screen_size.y:move.y=-moveSpeed
 	rotation+=spin*delta
 
-func on_spike_hit(body,spike):
-	spike.queue_free()
-	numSpikes-=1
-	body.queue_free()
-	spikes.erase(spike)
-	if numSpikes==0:
-		# Add exploasion
-		dead.emit()
-		set_deferred('monitorable',false)
-		set_deferred('monitoring',false)
-		$Sprite2D.hide()
-		$Explosion.show()
-		$Explosion.play()
-		move=Vector2.ZERO
-		spin=0
+func on_spike_hit(area,spike):
+	if spike in spikes:
+		spike.queue_free()
+		numSpikes-=1
+		area.queue_free()
+		spikes.erase(spike)
+		if numSpikes==0:
+			# Add exploasion
+			dead.emit()
+			set_deferred('monitorable',false)
+			set_deferred('monitoring',false)
+			$Sprite2D.hide()
+			$Explosion.show()
+			$Explosion.play()
+			move=Vector2.ZERO
+			spin=0
 
 func shoot():
 	for spike in spikes:
@@ -62,6 +63,6 @@ func shoot():
 		add_sibling(bullet)
 
 
-func _on_body_entered(body):
-	body.queue_free()
+func _on_body_entered(area):
+	area.queue_free()
 	# add effect to show bullet deletion

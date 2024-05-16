@@ -70,5 +70,5 @@ sprite_frames = SubResource("SpriteFrames_adjo8")
 frame = 7
 frame_progress = 1.0
 
-[connection signal="area_exited" from="." to="." method="_on_body_entered"]
+[connection signal="area_entered" from="." to="." method="_on_body_entered"]
 [connection signal="timeout" from="ShootTimer" to="." method="shoot"]
