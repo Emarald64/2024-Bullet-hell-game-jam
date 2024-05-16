@@ -36,7 +36,7 @@ func hit(body):
 	health-=1
 	if not body.pierce and not dieing:
 			body.queue_free()
-	if health<=0:
+	if health<=0 and not dieing:
 		dieing=true
 		dead.emit()
 		$Sprite2D.hide()

@@ -3,7 +3,8 @@ extends Area2D
 signal dead
 var player
 var speed=600
-var friction=1
+var explosionSize=200
+var friction=1.2
 var velocity:Vector2=Vector2.ZERO
 var explosionDelay=1
 var exploading=false
@@ -11,7 +12,8 @@ var lastRotation=0
 var lastPosition=Vector2.ZERO
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
+	$ExplosionCollision.shape.radius=explosionSize
+	$Explosion.scale=Vector2(explosionSize*3/100,explosionSize*3/100)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -24,9 +26,10 @@ func _process(delta):
 	velocity*=1/(1+(delta*friction))
 	
 	#debug circle
-	#if not exploading:DebugDraw2D.circle((velocity*0.5**(friction*explosionDelay))+position,100)
-	if exploading:DebugDraw2D.circle(lastPosition,64)
-	if ((velocity*0.5**(friction*explosionDelay))+position).distance_to(player.position)<100 and not exploading and not player.dead:
+	if not exploading:DebugDraw2D.circle((velocity*0.5**(friction*explosionDelay))+position,explosionSize/2)
+	else:DebugDraw2D.circle(lastPosition,explosionSize)
+	
+	if ((velocity*0.5**(friction*explosionDelay))+position).distance_to(player.position)<explosionSize/2 and not exploading and not player.dead and $VisibleOnScreenNotifier2D.is_on_screen():
 		exploading=true
 		lastRotation=rotation
 		lastPosition=(velocity*0.5**(0.5*friction*explosionDelay))+position
@@ -50,5 +53,5 @@ func _on_explosion_timer_timeout():
 
 
 func _on_explosion_animation_finished():
-	dead.emit()
+	if not player.dead:dead.emit()
 	queue_free()

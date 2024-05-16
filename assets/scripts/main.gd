@@ -24,7 +24,12 @@ var upgradeStats={
 	'enemy2Speed':250,
 	'enemy2BulletSpeed':200,
 	'enemy2Spin':PI,
-	'enemy2FireCooldown':1.75}
+	'enemy2FireCooldown':1.75,
+	
+	'enemy3Speed':600,
+	'enemy3Delay':1,
+	'enemy3ExplosionSize':180,
+	}
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	screen_size = get_viewport_rect().size
@@ -38,13 +43,13 @@ func _process(_delta):
 	if Input.is_action_just_pressed("debug_spawn_enemy3"):spawn_enemy3()
 func start_round():
 	const rounds=[
-		{0:2,1000:1},
+		{0:3},
 		{0:1,5:1,10:1,15:1,20:1},
-		{0:1,5:1,10:1,50:2},
-		{0:1,5:1,10:1,15:1,20:1,40:2,50:2,60:2},
-		{},
-		{},
-		{},
+		{0:1,5:1,10:1,70:2},
+		{0:1,5:1,10:1,15:1,20:1,40:2,50:2},
+		{0:2,10:2,15:2,115:1,120:1,125:1,130:1,150:2},
+		{0:3,30:1,35:1,40:1,45:1,50:1,70:2,80:2,85:3,100:2},
+		{0:1,5:1,10:1,15:1,20:1,40:2,50:2,55:3,60:2,100:2,120:2,300:3,1000:3},
 		{},
 		{},
 		{} #final
@@ -106,6 +111,8 @@ func spawn_enemy3():
 	enemy.position=Vector2(-100 if $Player.position.x>screen_size.x/2 else screen_size.x+100,-100)
 	enemy.player=$Player
 	enemy.dead.connect(on_enemy_death)
+	enemy.speed=upgradeStats['enemy3Speed']
+	enemy.explosionSize=upgradeStats['enemy3ExplosionSize']
 	add_child(enemy)
 
 func on_enemy_death():
@@ -141,14 +148,17 @@ func upgradeMenu():
 			'enemy2Speed':['enemy2 speed',0,0],
 			'enemy2BulletSpeed':['enemy2 Bullet speed',0,0],
 			'enemy2Spin':['enemy2 spin speed',1,1],
-			'enemy2FireCooldown':['enemy2 fire rate',1,0]}
+			'enemy2FireCooldown':['enemy2 fire rate',1,0],
+			'enemy3Speed':['enemy3 speed',0,0],
+			'enemy3Delay':['enemy3 explosion delay',0,0],
+			'enemy3ExplosionSize':['enemy3 explosion size',0,0]}
 		var upside=stats.keys().pick_random()
-		while (upside=='enemy2Spikes' and upgradeStats['enemy2Spikes']<2) or (upside in ['playerSpeed','playerBulletSpeed'] and upgradeStats[upside]>1000):upside=stats.keys().pick_random()
+		while (upside=='enemy2Spikes' and upgradeStats['enemy2Spikes']<2) or (upside in ['playerSpeed','playerBulletSpeed'] and upgradeStats[upside]>1000) or ('enemy2' in upside and roundNumber<=0) or ('enemy3' in upside and roundNumber<=2):upside=stats.keys().pick_random()
 		const powers=[[0.9,1.1],[0.8,1.25],[0.67,1.5],[0.5,2],[0.4,2.5]]
 		var upsidePower=x+randi_range(1,2)
 		card.get_node("Upsides").text='x'+str(powers[upsidePower][stats[upside][2]])+' '+stats[upside][0]
 		var downside=upside
-		while downside==upside or ('speed' in downside and upgradeStats[downside]>1000 and downside not in ['playerSpeed','playerBulletSpeed']):downside=stats.keys().pick_random()
+		while downside==upside or ('speed' in downside and upgradeStats[downside]>1000 and downside not in ['playerSpeed','playerBulletSpeed']) or ('enemy2' in downside and roundNumber<=0) or ('enemy3' in downside and roundNumber<=2):downside=stats.keys().pick_random()
 		var downsidePower=upsidePower-randi_range(0,1)
 		card.get_node("Downsides").text='x'+str(powers[downsidePower][stats[downside][2]*-1+1])+' '+stats[downside][0]
 		card.position=Vector2(screen_size.x/2-432+288*x,screen_size.y/2-168)

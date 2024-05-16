@@ -65,9 +65,8 @@ shape = SubResource("CircleShape2D_e1jfl")
 one_shot = true
 
 [node name="Explosion" type="AnimatedSprite2D" parent="."]
-visible = false
-position = Vector2(-4, -4.5)
-scale = Vector2(6.28125, 6.28125)
+position = Vector2(2.08165e-12, 2.08165e-12)
+scale = Vector2(6, 6)
 sprite_frames = SubResource("SpriteFrames_eu8ys")
 frame = 7
 frame_progress = 1.0
@@ -75,6 +74,10 @@ frame_progress = 1.0
 [node name="ExplosionCollision" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_vl4ii")
 disabled = true
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+position = Vector2(2.08165e-12, 2.08165e-12)
+scale = Vector2(4.45, 4.6)
 
 [connection signal="body_entered" from="." to="." method="start_exploasion"]
 [connection signal="timeout" from="ExplosionTimer" to="." method="_on_explosion_timer_timeout"]
