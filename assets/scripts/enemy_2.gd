@@ -20,7 +20,7 @@ func _ready():
 		spike.rotation=(x*TAU/numSpikes)-PI/2
 		spike.position=Vector2(cos(x*TAU/numSpikes),sin(x*TAU/numSpikes))*41
 		spike.scale=Vector2(1.5,1.5)
-		spike.body_entered.connect(on_spike_hit.bind(spike))
+		spike.area_entered.connect(on_spike_hit.bind(spike))
 		spikes.append(spike)
 		add_child(spike)
 

@@ -8,9 +8,9 @@ var screen_size
 var enemies={0:3}
 var enemyCount:int
 var liveEnemies=0
-var roundNumber=4
+var roundNumber=0
 
-var upgradeStats={
+const defaultUpgradeStats={
 	'playerFireCooldown':0.25,
 	'playerHealth':5, 
 	'playerBulletSpeed':300, 
@@ -29,14 +29,15 @@ var upgradeStats={
 	'enemy3Speed':600,
 	'enemy3Delay':1,
 	'enemy3ExplosionSize':180,
+	
+	#special
+	'shotgun':true
 	}
-var specialUpgrades={
-	'shotgun':false
-}
+var upgradeStats:Dictionary
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	screen_size = get_viewport_rect().size
-	start_round()
+	start_game()
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -44,6 +45,12 @@ func _process(_delta):
 	if Input.is_action_just_pressed("debug_spawn_enemy1"):spawn_enemy1()
 	if Input.is_action_just_pressed("debug_spawn_enemy2"):spawn_enemy2()
 	if Input.is_action_just_pressed("debug_spawn_enemy3"):spawn_enemy3()
+
+func start_game():
+	upgradeStats=defaultUpgradeStats
+	$Player.start(true)
+	start_round()
+
 func start_round():
 	const rounds=[
 		{0:1,5:1,10:1,15:1,20:1},
@@ -61,6 +68,7 @@ func start_round():
 	$Player.maxHealth=upgradeStats['playerHealth']
 	$Player.bulletSpeed=upgradeStats['playerBulletSpeed']
 	$Player.speed=upgradeStats['playerSpeed']
+	$Player.shotgun=upgradeStats['shotgun']
 	get_node('Player/ShootCooldown').wait_time=upgradeStats['playerFireCooldown']
 	$Player.start()
 	roundTick=0

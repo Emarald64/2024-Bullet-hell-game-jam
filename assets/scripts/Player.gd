@@ -9,11 +9,12 @@ var bulletSpeed=300
 var speed=400.0
 var screen_size
 var play_size
-var dead:bool
+var dead=false
 var health=5
 var maxHealth=5
 var dashing=false
 var velocity=Vector2.ZERO
+var shotgun=false
 
 #var dashspeed
 #var speedmod=0
@@ -29,6 +30,16 @@ func _ready():
 func _process(delta):
 	velocity/=1+Friction*delta
 	velocity+= Input.get_vector('move_left','move_right','move_up','move_down')*speed*delta*AccelerationMod
+	if Input.is_action_pressed("shoot") and $ShootCooldown.is_stopped() and not dead:
+		for x in range(1 if not shotgun else 5):
+			var bullet = bulletScene.instantiate()
+			bullet.position=position
+			bullet.rotation=0 if not shotgun else randf_range(-0.35,0.35)
+			bullet.move=Vector2(0,-bulletSpeed).rotated(bullet.rotation)
+			bullet.range=INF if not shotgun else 300
+			get_parent().add_child(bullet)
+			$ShootCooldown.start()
+	#old control code
 	#if Input.is_action_pressed("move_right"):
 		#velocity.x += speed/AccelerationDivider
 	#if Input.is_action_pressed("move_left"):
@@ -37,12 +48,6 @@ func _process(delta):
 		#velocity.y += speed/AccelerationDivider
 	#if Input.is_action_pressed("move_up"):
 		#velocity.y -= speed/AccelerationDivider
-	if Input.is_action_pressed("shoot") and $ShootCooldown.is_stopped() and not dead:
-		var bullet = bulletScene.instantiate()
-		bullet.position=position
-		bullet.move=Vector2(0,-bulletSpeed)
-		get_parent().add_child(bullet)
-		$ShootCooldown.start()
 	#if Input.is_action_just_pressed("dash") and velocity.length() > 0 and $DashCooldown.is_stopped():
 		#dash.emit()
 		#dashing=true
@@ -83,14 +88,15 @@ func _on_body_entered(_body):
 			#speed=((-1.0/(speedmod+3))+1)*SpeedMultipier
 		#body.queue_free()
 	
-func start():
+func start(full:bool=true):
 	#velocity=Vector2.ZERO
-	dead=false
 	health=maxHealth
 	update_health_bar()
 	#speedmod=0
 	#dashmod=0
-	show()
+	if full:
+		show()
+		dead=false
 	
 
 func _on_invincibility_timer_timeout():

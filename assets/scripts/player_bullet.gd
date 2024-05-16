@@ -13,8 +13,8 @@ func _ready():
 func _process(delta):
 	position+=move*delta
 	range-=move.length()*delta
-	if range<0:queue_free()
-	
+	if range<50:modulate=Color(1,1,1,range/50)
+	elif range<0:queue_free()
 
 func _on_visible_on_screen_notifier_2d_screen_exited():
 	queue_free()

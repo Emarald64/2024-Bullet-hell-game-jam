@@ -52,6 +52,7 @@ enemy3 = ExtResource("7_seb7a")
 cardScene = ExtResource("4_u73dw")
 
 [node name="Player" parent="." instance=ExtResource("1_7w1kc")]
+z_index = 1
 position = Vector2(629, 501)
 
 [node name="RoundTimer" type="Timer" parent="."]
@@ -64,6 +65,7 @@ libraries = {
 
 [node name="DeathScreen" parent="." instance=ExtResource("6_6axhp")]
 modulate = Color(1, 1, 1, 0)
+z_index = 2
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
