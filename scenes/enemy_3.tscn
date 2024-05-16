@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://d2geabru1tw8w"]
+[gd_scene load_steps=12 format=3 uid="uid://d2geabru1tw8w"]
 
 [ext_resource type="Script" path="res://assets/scripts/Enemy3.gd" id="1_2yds0"]
 [ext_resource type="Texture2D" uid="uid://q5gpju1m0d8a" path="res://assets/sprites/enemies/enemy3.svg" id="2_cybcn"]
@@ -8,8 +8,6 @@
 [ext_resource type="Texture2D" uid="uid://buope61qn72ws" path="res://assets/sprites/enemies/explode/0004.png" id="6_clex5"]
 [ext_resource type="Texture2D" uid="uid://d0fpytunl0uj6" path="res://assets/sprites/enemies/explode/0005.png" id="7_qnhpj"]
 [ext_resource type="Texture2D" uid="uid://cy7o7c6kallxc" path="res://assets/sprites/enemies/explode/0006.png" id="8_jan6d"]
-[ext_resource type="Texture2D" uid="uid://b4g36211qy4bc" path="res://assets/sprites/enemies/explode/0007.png" id="9_mklcg"]
-[ext_resource type="Texture2D" uid="uid://1bbp8u7t6c3f" path="res://assets/sprites/enemies/explode/0008.png" id="10_erlkw"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_e1jfl"]
 radius = 64.0
@@ -34,12 +32,6 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": ExtResource("8_jan6d")
-}, {
-"duration": 1.0,
-"texture": ExtResource("9_mklcg")
-}, {
-"duration": 1.0,
-"texture": ExtResource("10_erlkw")
 }],
 "loop": false,
 "name": &"default",
@@ -68,7 +60,7 @@ one_shot = true
 position = Vector2(2.08165e-12, 2.08165e-12)
 scale = Vector2(6, 6)
 sprite_frames = SubResource("SpriteFrames_eu8ys")
-frame = 7
+frame = 5
 frame_progress = 1.0
 
 [node name="ExplosionCollision" type="CollisionShape2D" parent="."]

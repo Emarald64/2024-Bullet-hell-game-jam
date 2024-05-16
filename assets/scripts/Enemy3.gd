@@ -14,7 +14,7 @@ var lastPosition=Vector2.ZERO
 func _ready():
 	$ExplosionCollision.shape.radius=explosionSize
 	$Explosion.scale=Vector2(explosionSize*3/100,explosionSize*3/100)
-
+	$ExplosionTimer.wait_time=explosionDelay
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	$Sprite2D.rotation=velocity.angle()+(3*PI/4)

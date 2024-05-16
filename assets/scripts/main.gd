@@ -110,8 +110,10 @@ func spawn_enemy3():
 	var enemy=enemy3.instantiate()
 	enemy.position=Vector2(-100 if $Player.position.x>screen_size.x/2 else screen_size.x+100,-100)
 	enemy.player=$Player
+	enemy.explosionDelay=upgradeStats['enemy3Delay']
 	enemy.dead.connect(on_enemy_death)
 	enemy.speed=upgradeStats['enemy3Speed']
+	
 	enemy.explosionSize=upgradeStats['enemy3ExplosionSize']
 	add_child(enemy)
 
