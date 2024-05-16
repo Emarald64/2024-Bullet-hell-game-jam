@@ -57,6 +57,7 @@ shape = SubResource("CircleShape2D_e1jfl")
 one_shot = true
 
 [node name="Explosion" type="AnimatedSprite2D" parent="."]
+visible = false
 position = Vector2(2.08165e-12, 2.08165e-12)
 scale = Vector2(6, 6)
 sprite_frames = SubResource("SpriteFrames_eu8ys")
