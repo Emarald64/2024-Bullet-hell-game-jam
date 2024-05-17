@@ -1,20 +1,26 @@
 extends Area2D
 signal death
 
-@export var AccelerationMod=20
+@export var AccelerationMod=10
 #@export var SpeedMultipier=800
 @export var Friction=10
 @export var bulletScene :PackedScene
 var bulletSpeed=300
-var speed=400.0
-var screen_size
+var speed=800.0
+#var screen_size
 var play_size
 var dead=false
 var health=5
 var maxHealth=5
 var dashing=false
 var velocity=Vector2.ZERO
+const pierce=true
+var maxSpeed=0
+var shootCooldown=0.25
+var barsflipped=false
+
 var shotgun=false
+var canDash=true
 
 #var dashspeed
 #var speedmod=0
@@ -28,35 +34,34 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	velocity/=1+Friction*delta
-	velocity+= Input.get_vector('move_left','move_right','move_up','move_down')*speed*delta*AccelerationMod
-	if Input.is_action_pressed("shoot") and $ShootCooldown.is_stopped() and not dead:
-		for x in range(1 if not shotgun else 5):
-			var bullet = bulletScene.instantiate()
-			bullet.position=position
-			bullet.rotation=0 if not shotgun else randf_range(-0.35,0.35)
-			bullet.move=Vector2(0,-bulletSpeed).rotated(bullet.rotation)
-			bullet.range=INF if not shotgun else 300
-			get_parent().add_child(bullet)
-			$ShootCooldown.start()
-	#old control code
-	#if Input.is_action_pressed("move_right"):
-		#velocity.x += speed/AccelerationDivider
-	#if Input.is_action_pressed("move_left"):
-		#velocity.x -= speed/AccelerationDivider
-	#if Input.is_action_pressed("move_down"):
-		#velocity.y += speed/AccelerationDivider
-	#if Input.is_action_pressed("move_up"):
-		#velocity.y -= speed/AccelerationDivider
-	#if Input.is_action_just_pressed("dash") and velocity.length() > 0 and $DashCooldown.is_stopped():
-		#dash.emit()
-		#dashing=true
-		#velocity*=2+(dashmod/2.0)
-		#$DashTimer.start()
-		#invincible = true
-		#if velocity.length()<speed/2:
-			#velocity*=speed/2/velocity.length()
-
+	if not dashing:
+		velocity/=1+Friction*delta
+		velocity+= Input.get_vector('move_left','move_right','move_up','move_down')*speed*delta*AccelerationMod
+		if Input.is_action_pressed("shoot") and $ShootCooldown.is_stopped() and not dead and not canDash:
+			for x in range(1 if not shotgun else 5):
+				var bullet = bulletScene.instantiate()
+				bullet.position=position
+				bullet.rotation=0 if not shotgun else randf_range(-0.35,0.35)
+				bullet.move=Vector2(0,-bulletSpeed).rotated(bullet.rotation)
+				bullet.range=INF if not shotgun else 300
+				get_parent().add_child(bullet)
+				$ShootCooldown.start()
+		elif Input.is_action_just_pressed("shoot") and velocity.length() > 1 and $DashCooldown.is_stopped() and canDash:
+			set_collision_layer_value(2,true)
+			dashing=true
+			velocity*=4
+			$ExtraBar.tint_progress=Color(0,1,1)
+			$DashTimer.start()
+			invincible = true
+			if velocity.length()<speed:
+				velocity*=speed/velocity.length()
+		if canDash:
+			$ExtraBar.value=1-$DashCooldown.time_left/$DashCooldown.wait_time
+	else:
+		if $DashTimer.time_left<=0.05:
+			dashing=false
+			set_collision_layer_value(2,false)
+		$ExtraBar.value=$DashTimer.time_left/$DashTimer.wait_time
 	if dead!=true:
 		#if velocity.x>2:velocity.x=2
 		#elif velocity.x<-2:velocity.x=-2
@@ -64,6 +69,10 @@ func _process(delta):
 		#if velocity.y<-2:velocity.y=-2
 		position += velocity * delta 
 		position = position.clamp(Vector2.ZERO, play_size)
+		if (position.y<64 and not barsflipped) or (position.y>64 and barsflipped):
+			$HealthBar.position.y*=-1
+			$ExtraBar.position.y*=-1
+			barsflipped=not barsflipped
 
 
 func _on_body_entered(_body):
@@ -90,6 +99,12 @@ func _on_body_entered(_body):
 	
 func start(full:bool=true):
 	#velocity=Vector2.ZERO
+	if canDash:
+		$ExtraBar.show()
+		$ExtraBar.tint_progress=Color(0,0.75,0.75)
+		$DashCooldown.wait_time=shootCooldown*4
+	else:
+		$ShootCooldown.wait_timer=shootCooldown
 	health=maxHealth
 	update_health_bar()
 	#speedmod=0
@@ -102,13 +117,12 @@ func start(full:bool=true):
 func _on_invincibility_timer_timeout():
 	if not dead:
 		self.modulate=Color(1.0,1.0,1.0,1.0)
-		invincible = false
+		if not dashing:invincible = false
 
 
-#func _on_dash_end():
-	#dashing=false
-	#$DashCooldown.start()
-	#if $InvincibleTimer.is_stopped():invincible = false
+func _on_dash_end():
+	$DashCooldown.start()
+	if $InvincibleTimer.is_stopped():invincible = false
 	
 func update_health_bar():
 	$HealthBar.value=health

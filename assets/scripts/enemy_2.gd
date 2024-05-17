@@ -41,7 +41,7 @@ func on_spike_hit(area,spike):
 	if spike in spikes:
 		spike.queue_free()
 		numSpikes-=1
-		area.queue_free()
+		if not area.pierce:area.queue_free()
 		spikes.erase(spike)
 		if numSpikes==0:
 			# Add exploasion
@@ -64,5 +64,5 @@ func shoot():
 
 
 func _on_body_entered(area):
-	area.queue_free()
+	if not area.pierce:area.queue_free()
 	# add effect to show bullet deletion

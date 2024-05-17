@@ -8,13 +8,13 @@ var screen_size
 var enemies={0:3}
 var enemyCount:int
 var liveEnemies=0
-var roundNumber=3
+var roundNumber=0
 
 const defaultUpgradeStats={
 	'playerFireCooldown':0.25,
 	'playerHealth':5, 
 	'playerBulletSpeed':300, 
-	'playerSpeed':400,
+	'playerSpeed':800,
 
 	'enemy1Speed':150,
 	'enemy1BulletSpeed':200,
@@ -47,7 +47,7 @@ func _process(_delta):
 	if Input.is_action_just_pressed("debug_spawn_enemy3"):spawn_enemy3()
 
 func start_game():
-	upgradeStats=defaultUpgradeStats
+	upgradeStats=defaultUpgradeStats.duplicate()
 	$Player.start(true)
 	start_round()
 
@@ -69,7 +69,7 @@ func start_round():
 	$Player.bulletSpeed=upgradeStats['playerBulletSpeed']
 	$Player.speed=upgradeStats['playerSpeed']
 	$Player.shotgun=upgradeStats['shotgun']
-	get_node('Player/ShootCooldown').wait_time=upgradeStats['playerFireCooldown']
+	$Player.shootCooldown=upgradeStats['playerFireCooldown']
 	$Player.start()
 	roundTick=0
 	liveEnemies=0

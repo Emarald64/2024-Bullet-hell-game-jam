@@ -23,10 +23,6 @@ texture = ExtResource("2_4caya")
 scale = Vector2(0.3, 0.3)
 shape = SubResource("RectangleShape2D_d8jxx")
 
-[node name="InvincibleTimer" type="Timer" parent="."]
-wait_time = 0.7
-one_shot = true
-
 [node name="HitSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("3_l0auy")
 volume_db = -10.0
@@ -42,12 +38,38 @@ value = 5.0
 texture_under = ExtResource("3_u71hg")
 texture_progress = ExtResource("4_umsi2")
 texture_progress_offset = Vector2(1, 1)
-tint_progress = Color(0, 1, 0, 1)
+tint_progress = Color(0.0941176, 0.8, 0.0941176, 1)
+
+[node name="ExtraBar" type="TextureProgressBar" parent="."]
+offset_left = -27.0
+offset_top = -59.0
+offset_right = -2.0
+offset_bottom = -54.0
+scale = Vector2(2.2, 2.2)
+max_value = 1.0
+step = 2.08165e-12
+value = 1.0
+texture_under = ExtResource("3_u71hg")
+texture_progress = ExtResource("4_umsi2")
+texture_progress_offset = Vector2(1, 1)
+tint_progress = Color(0, 0.788235, 0.788235, 1)
+
+[node name="InvincibleTimer" type="Timer" parent="."]
+wait_time = 0.7
+one_shot = true
 
 [node name="ShootCooldown" type="Timer" parent="."]
 wait_time = 0.25
 one_shot = true
 
+[node name="DashTimer" type="Timer" parent="."]
+wait_time = 0.2
+one_shot = true
+
+[node name="DashCooldown" type="Timer" parent="."]
+one_shot = true
+
 [connection signal="area_entered" from="." to="." method="_on_body_entered"]
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="timeout" from="InvincibleTimer" to="." method="_on_invincibility_timer_timeout"]
+[connection signal="timeout" from="DashTimer" to="." method="_on_dash_end"]

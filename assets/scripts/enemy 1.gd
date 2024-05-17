@@ -32,10 +32,10 @@ func _on_bullet_timer_timeout():
 		get_parent().add_child(bullet)
 
 
-func hit(body):
+func hit(area):
 	health-=1
-	if not body.pierce and not dieing:
-			body.queue_free()
+	if not area.pierce and not dieing:
+			area.queue_free()
 	if health<=0 and not dieing:
 		dieing=true
 		dead.emit()
