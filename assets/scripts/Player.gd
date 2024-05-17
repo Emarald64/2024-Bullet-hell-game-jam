@@ -108,6 +108,7 @@ func start(full:bool=true):
 		$ExtraBar.tint_progress=Color(0,0.75,0.75)
 		$DashCooldown.wait_time=shootCooldown*2
 	else:
+		if shotgun:shootCooldown*=2
 		$ShootCooldown.wait_time=shootCooldown
 	health=maxHealth
 	update_health_bar()

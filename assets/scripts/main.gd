@@ -31,7 +31,7 @@ const defaultUpgradeStats={
 	'enemy3ExplosionSize':180,
 	}
 var upgradeStats:Dictionary
-var specialUpgrades=[]
+var specialUpgrade=''
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	screen_size = get_viewport_rect().size
@@ -66,8 +66,8 @@ func start_round():
 	$Player.maxHealth=upgradeStats['playerHealth']
 	$Player.bulletSpeed=upgradeStats['playerBulletSpeed']
 	$Player.speed=upgradeStats['playerSpeed']
-	$Player.shotgun='shotgun' in specialUpgrades
-	$Player.canDash='dash' in specialUpgrades
+	$Player.shotgun='shotgun' == specialUpgrade
+	$Player.canDash='dash' == specialUpgrade
 	$Player.shootCooldown=upgradeStats['playerFireCooldown']
 	$Player.start()
 	roundTick=0
@@ -162,14 +162,14 @@ func upgradeMenu():
 			'enemy3Speed':['enemy3 speed',0,0],
 			'enemy3Delay':['enemy3 explosion delay',0,0],
 			'enemy3ExplosionSize':['enemy3 explosion size',0,0]}
-		
+			
 		# vairableName:[common name,discription,cant be with,isUpside]
 		const specialUpgrades={
-			'shotgun':['Shotgun','Shoot 5 bullets at once with a limited range and 1/2 fire rate',['dash','shotgun'],true],
-			'dash':['Dash',"Dash through enemyies to deal damage but, you can't shoot",['dash','shotgun'],true]
-		}
-		if x==2 and randi_range(0,0)==0:
-			var upside=specialUpgrades.keys().filter(func(y): return specialUpgrades[y][2].any(func(z):return z in specialUpgrades)).pick_random()
+			'shotgun':['Shotgun','Shoot 5 bullets at once with a limited range and 1/2 fire rate',['dash','shotgun']],
+			'dash':['Dash',"Dash through enemyies to deal damage but, you can't shoot",['dash','shotgun']]}
+		#var CSU=specialUpgrades.keys().filter(func(y): return not specialUpgrades[y][2].any(func(z):return z in specialUpgrades))
+		if x==2 and specialUpgrade=='' and randi_range(0,0)==0:
+			var upside=specialUpgrades.keys().pick_random()
 			card.self_modulate=Color(1,0,0)
 			card.get_node('Upsides').text=specialUpgrades[upside][0]
 			card.get_node('Downsides').text=specialUpgrades[upside][1]
@@ -193,7 +193,7 @@ func upgradeMenu():
 
 func card_clicked(card):
 	var special=card.get_meta('Special')
-	if special:specialUpgrades.append(special)
+	if special:specialUpgrade = special
 	else:
 		var powers=card.get_meta('Powers')
 		for x in powers:
