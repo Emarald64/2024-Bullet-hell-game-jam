@@ -56,9 +56,13 @@ func _process(delta):
 			if velocity.length()<speed:
 				velocity*=speed/velocity.length()
 		if canDash:
-			$ExtraBar.value=1-$DashCooldown.time_left/$DashCooldown.wait_time
+			if $DashTimer.is_stopped():
+				if $DashCooldown.is_stopped():$ExtraBar.tint_progress=Color(0,0.75,0.75)
+				$ExtraBar.value=1-$DashCooldown.time_left/$DashCooldown.wait_time
+			else:$ExtraBar.value=$DashTimer.time_left/$DashTimer.wait_time
 	else:
-		if $DashTimer.time_left<=0.05:
+		if $DashTimer.time_left<=0.1:
+			$ExtraBar.tint_progress=Color(0,0.5,0.5)
 			dashing=false
 			set_collision_layer_value(2,false)
 		$ExtraBar.value=$DashTimer.time_left/$DashTimer.wait_time
@@ -102,7 +106,7 @@ func start(full:bool=true):
 	if canDash:
 		$ExtraBar.show()
 		$ExtraBar.tint_progress=Color(0,0.75,0.75)
-		$DashCooldown.wait_time=shootCooldown*4
+		$DashCooldown.wait_time=shootCooldown*2
 	else:
 		$ShootCooldown.wait_timer=shootCooldown
 	health=maxHealth
