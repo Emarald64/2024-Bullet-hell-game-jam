@@ -41,6 +41,7 @@ texture_progress_offset = Vector2(1, 1)
 tint_progress = Color(0.0941176, 0.8, 0.0941176, 1)
 
 [node name="ExtraBar" type="TextureProgressBar" parent="."]
+visible = false
 offset_left = -27.0
 offset_top = -59.0
 offset_right = -2.0

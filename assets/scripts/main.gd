@@ -5,7 +5,7 @@ extends Node2D
 @export var cardScene:PackedScene
 var roundTick=0
 var screen_size
-var enemies={0:3}
+var enemies:Dictionary
 var enemyCount:int
 var liveEnemies=0
 var roundNumber=0
@@ -29,11 +29,9 @@ const defaultUpgradeStats={
 	'enemy3Speed':600,
 	'enemy3Delay':1,
 	'enemy3ExplosionSize':180,
-	
-	#special
-	'shotgun':false
 	}
 var upgradeStats:Dictionary
+var specialUpgrades=[]
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	screen_size = get_viewport_rect().size
@@ -68,7 +66,8 @@ func start_round():
 	$Player.maxHealth=upgradeStats['playerHealth']
 	$Player.bulletSpeed=upgradeStats['playerBulletSpeed']
 	$Player.speed=upgradeStats['playerSpeed']
-	$Player.shotgun=upgradeStats['shotgun']
+	$Player.shotgun='shotgun' in specialUpgrades
+	$Player.canDash='dash' in specialUpgrades
 	$Player.shootCooldown=upgradeStats['playerFireCooldown']
 	$Player.start()
 	roundTick=0
@@ -163,25 +162,42 @@ func upgradeMenu():
 			'enemy3Speed':['enemy3 speed',0,0],
 			'enemy3Delay':['enemy3 explosion delay',0,0],
 			'enemy3ExplosionSize':['enemy3 explosion size',0,0]}
-		var upside=stats.keys().pick_random()
-		while (upside=='enemy2Spikes' and upgradeStats['enemy2Spikes']<2) or (upside in ['playerSpeed','playerBulletSpeed'] and upgradeStats[upside]>1000) or ('enemy2' in upside and roundNumber<=0) or ('enemy3' in upside and roundNumber<=2):upside=stats.keys().pick_random()
-		const powers=[[0.9,1.1],[0.8,1.25],[0.67,1.5],[0.5,2],[0.4,2.5]]
-		var upsidePower=x+randi_range(1,2)
-		card.get_node("Upsides").text='x'+str(powers[upsidePower][stats[upside][2]])+' '+stats[upside][0]
-		var downside=upside
-		while downside==upside or ('speed' in downside and upgradeStats[downside]>1000 and downside not in ['playerSpeed','playerBulletSpeed']) or ('enemy2' in downside and roundNumber<=0) or ('enemy3' in downside and roundNumber<=2):downside=stats.keys().pick_random()
-		var downsidePower=upsidePower-randi_range(0,1)
-		card.get_node("Downsides").text='x'+str(powers[downsidePower][stats[downside][2]*-1+1])+' '+stats[downside][0]
+		
+		# vairableName:[common name,discription,cant be with,isUpside]
+		const specialUpgrades={
+			'shotgun':['Shotgun','Shoot 5 bullets at once with a limited range and 1/2 fire rate',['dash','shotgun'],true],
+			'dash':['Dash',"Dash through enemyies to deal damage but, you can't shoot",['dash','shotgun'],true]
+		}
+		if x==2 and randi_range(0,0)==0:
+			var upside=specialUpgrades.keys().filter(func(y): return specialUpgrades[y][2].any(func(z):return z in specialUpgrades)).pick_random()
+			card.self_modulate=Color(1,0,0)
+			card.get_node('Upsides').text=specialUpgrades[upside][0]
+			card.get_node('Downsides').text=specialUpgrades[upside][1]
+			card.get_node('Downsides').add_theme_color_override('font_color',Color(1,1,1))
+			card.set_meta('Special',upside)
+		else:
+			var upside=stats.keys().pick_random()
+			while (upside=='enemy2Spikes' and upgradeStats['enemy2Spikes']<2) or (upside in ['playerSpeed','playerBulletSpeed'] and upgradeStats[upside]>1000) or ('enemy2' in upside and roundNumber<=0) or ('enemy3' in upside and roundNumber<=2):upside=stats.keys().pick_random()
+			const powers=[[0.9,1.1],[0.8,1.25],[0.67,1.5],[0.5,2],[0.4,2.5]]
+			var upsidePower=x+randi_range(1,2)
+			card.get_node("Upsides").text='x'+str(powers[upsidePower][stats[upside][2]])+' '+stats[upside][0]
+			var downside=upside
+			while downside==upside or ('speed' in downside and upgradeStats[downside]>1000 and downside not in ['playerSpeed','playerBulletSpeed']) or ('enemy2' in downside and roundNumber<=0) or ('enemy3' in downside and roundNumber<=2):downside=stats.keys().pick_random()
+			var downsidePower=upsidePower-randi_range(0,1)
+			card.get_node("Downsides").text='x'+str(powers[downsidePower][stats[downside][2]*-1+1])+' '+stats[downside][0]
+			card.set_meta('Powers',[[upside,powers[upsidePower][stats[upside][1]]],[downside,powers[downsidePower][stats[downside][1]*-1+1]]])
 		card.position=Vector2(screen_size.x/2-432+288*x,screen_size.y/2-168)
-		card.set_meta('Powers',[upside,powers[upsidePower][stats[upside][1]],downside,powers[downsidePower][stats[downside][1]*-1+1]])
 		card.get_node('Button').pressed.connect(card_clicked.bind(card))
 		background.add_child(card)
 	add_child(background)
 
 func card_clicked(card):
-	var meta=card.get_meta('Powers')
-	upgradeStats[meta[0]]*=meta[1] #set upside
-	upgradeStats[meta[2]]*=meta[3] #set downside
+	var special=card.get_meta('Special')
+	if special:specialUpgrades.append(special)
+	else:
+		var powers=card.get_meta('Powers')
+		for x in powers:
+			upgradeStats[x[0]]*x[1]
 	card.get_parent().queue_free()
 	roundNumber+=1
 	start_round()
@@ -191,5 +207,5 @@ func _on_player_death():
 	$DeathScreen/Score.text='Score: '+str(roundNumber)
 	$AnimationPlayer.play('Show Death Screen')
 	for node in get_children():
-			if node.get_meta('bullet', false):node.queue_free()
+		if node.get_meta('bullet', false):node.queue_free()
 	

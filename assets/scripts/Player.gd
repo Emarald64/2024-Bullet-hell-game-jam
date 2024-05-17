@@ -1,7 +1,7 @@
 extends Area2D
 signal death
 
-@export var AccelerationMod=10
+@export var AccelerationMod=6
 #@export var SpeedMultipier=800
 @export var Friction=10
 @export var bulletScene :PackedScene
@@ -20,7 +20,7 @@ var shootCooldown=0.25
 var barsflipped=false
 
 var shotgun=false
-var canDash=true
+var canDash=false
 
 #var dashspeed
 #var speedmod=0
@@ -46,10 +46,10 @@ func _process(delta):
 				bullet.range=INF if not shotgun else 300
 				get_parent().add_child(bullet)
 				$ShootCooldown.start()
-		elif Input.is_action_just_pressed("shoot") and velocity.length() > 1 and $DashCooldown.is_stopped() and canDash:
+		elif Input.is_action_just_pressed("shoot") and velocity.length() > 1 and $DashCooldown.is_stopped() and not dead and canDash:
 			set_collision_layer_value(2,true)
 			dashing=true
-			velocity*=4
+			velocity*=2
 			$ExtraBar.tint_progress=Color(0,1,1)
 			$DashTimer.start()
 			invincible = true
@@ -108,7 +108,7 @@ func start(full:bool=true):
 		$ExtraBar.tint_progress=Color(0,0.75,0.75)
 		$DashCooldown.wait_time=shootCooldown*2
 	else:
-		$ShootCooldown.wait_timer=shootCooldown
+		$ShootCooldown.wait_time=shootCooldown
 	health=maxHealth
 	update_health_bar()
 	#speedmod=0
