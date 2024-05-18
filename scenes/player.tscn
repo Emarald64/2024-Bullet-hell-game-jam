@@ -35,6 +35,7 @@ offset_bottom = -40.0
 scale = Vector2(2.2, 2.2)
 max_value = 5.0
 value = 5.0
+allow_greater = true
 texture_under = ExtResource("3_u71hg")
 texture_progress = ExtResource("4_umsi2")
 texture_progress_offset = Vector2(1, 1)

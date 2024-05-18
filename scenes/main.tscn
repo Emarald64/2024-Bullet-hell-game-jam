@@ -53,7 +53,7 @@ cardScene = ExtResource("4_u73dw")
 
 [node name="Player" parent="." instance=ExtResource("1_7w1kc")]
 z_index = 1
-position = Vector2(576, 800)
+position = Vector2(576, 432)
 
 [node name="RoundTimer" type="Timer" parent="."]
 wait_time = 0.1
@@ -62,20 +62,6 @@ wait_time = 0.1
 libraries = {
 "": SubResource("AnimationLibrary_w58xm")
 }
-
-[node name="Label" type="Label" parent="."]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -32.0
-offset_top = -11.5
-offset_right = 32.0
-offset_bottom = 11.5
-grow_horizontal = 2
-grow_vertical = 2
-text = "Round:0"
 
 [node name="DeathScreen" parent="." instance=ExtResource("6_6axhp")]
 modulate = Color(1, 1, 1, 0)

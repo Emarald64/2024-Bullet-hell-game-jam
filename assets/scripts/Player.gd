@@ -48,6 +48,7 @@ func _process(delta):
 				$ShootCooldown.start()
 		elif Input.is_action_just_pressed("shoot") and velocity.length() > 1 and $DashCooldown.is_stopped() and not dead and canDash:
 			set_collision_layer_value(2,true)
+			$CollisionShape2D.scale=Vector2(0.5,0.5)
 			dashing=true
 			velocity*=2
 			$ExtraBar.tint_progress=Color(0,1,1)
@@ -65,6 +66,7 @@ func _process(delta):
 			$ExtraBar.tint_progress=Color(0,0.5,0.5)
 			dashing=false
 			set_collision_layer_value(2,false)
+			$CollisionShape2D.scale=Vector2(0.3,0.3)
 		$ExtraBar.value=$DashTimer.time_left/$DashTimer.wait_time
 	if dead!=true:
 		#if velocity.x>2:velocity.x=2
@@ -101,7 +103,7 @@ func _on_body_entered(_body):
 			#speedmod+=1
 			#speed=((-1.0/(speedmod+3))+1)*SpeedMultipier
 		#body.queue_free()
-	
+
 func start(full:bool=true):
 	#velocity=Vector2.ZERO
 	if canDash:
@@ -112,8 +114,9 @@ func start(full:bool=true):
 		if shotgun:shootCooldown*=2
 		$ShootCooldown.wait_time=shootCooldown
 	health=maxHealth
-	update_health_bar()
 	self.modulate=Color(1.0,1.0,1.0,1)
+	update_health_bar()
+	#$HealthBar.max_value=health
 	#speedmod=0
 	#dashmod=0
 	if full:
@@ -132,7 +135,7 @@ func _on_dash_end():
 	if $InvincibleTimer.is_stopped():invincible = false
 	
 func update_health_bar():
-	$HealthBar.value=health
+	$HealthBar.value=health  
 	$HealthBar.max_value=maxHealth
 	if health==1:
 		$HealthBar.tint_progress=Color(1,0,0)

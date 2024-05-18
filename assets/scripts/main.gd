@@ -64,10 +64,9 @@ func start_round():
 		{},
 		{},
 		{},
-		{} #final
-	]
+		{}]
 	enemies=rounds[roundNumber]
-	$Player.maxHealth=upgradeStats['playerHealth']
+	$Player.maxHealth=int(upgradeStats['playerHealth'])
 	$Player.bulletSpeed=upgradeStats['playerBulletSpeed']
 	$Player.speed=upgradeStats['playerSpeed']
 	$Player.shotgun='shotgun' == specialUpgrade
@@ -165,7 +164,8 @@ func upgradeMenu():
 			'enemy2FireCooldown':['enemy2 fire rate',1,0],
 			'enemy3Speed':['enemy3 speed',0,0],
 			'enemy3Delay':['enemy3 explosion delay',0,0],
-			'enemy3ExplosionSize':['enemy3 explosion size',0,0]}
+			'enemy3ExplosionSize':['enemy3 explosion size',0,0]
+			}
 			
 		# vairableName:[common name,discription,cant be with,isUpside]
 		const specialUpgrades={
