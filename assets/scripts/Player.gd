@@ -82,14 +82,15 @@ func _process(delta):
 func _on_body_entered(_body):
 	if not invincible:
 		health-=1
-		update_health_bar()
-		$HitSound.play()
 		if health<=0:
 			dead=true
 			death.emit()
-		$InvincibleTimer.start()
+		else:
+			$InvincibleTimer.start()
+			invincible=true
+		update_health_bar()
+		$HitSound.play()
 		self.modulate=Color(1.0,1.0,1.0,0.5)
-		invincible=true
 #const powers=['health','dash','speed']
 	#elif body.get_meta('OnHit')=='power':
 		#if body.power=='health':emit_signal('heal')

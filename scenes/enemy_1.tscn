@@ -52,6 +52,7 @@ scale = Vector2(2, 2)
 collision_mask = 2
 script = ExtResource("1_iuewl")
 bulletScene = ExtResource("2_h7ko8")
+metadata/enemy = true
 
 [node name="BulletTimer" type="Timer" parent="."]
 

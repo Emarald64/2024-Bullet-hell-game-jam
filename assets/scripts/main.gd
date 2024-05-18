@@ -9,6 +9,7 @@ var enemies:Dictionary
 var enemyCount:int
 var liveEnemies=0
 var roundNumber=0
+var lastPlayerPos:Vector2=Vector2.ZERO
 
 const defaultUpgradeStats={
 	'playerFireCooldown':0.25,
@@ -31,21 +32,24 @@ const defaultUpgradeStats={
 	'enemy3ExplosionSize':180,
 	}
 var upgradeStats:Dictionary
-var specialUpgrade=''
+var specialUpgrade='none'
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	screen_size = get_viewport_rect().size
+	get_node('DeathScreen/Button').pressed.connect(goReset)
 	start_game()
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
+	if not $ResetPlayerTimer.is_stopped():$Player.position=lastPlayerPos.lerp(Vector2(576,432),1-$ResetPlayerTimer.time_left*2)
 	if Input.is_action_just_pressed("debug_spawn_enemy1"):spawn_enemy1()
 	if Input.is_action_just_pressed("debug_spawn_enemy2"):spawn_enemy2()
 	if Input.is_action_just_pressed("debug_spawn_enemy3"):spawn_enemy3()
 
 func start_game():
 	upgradeStats=defaultUpgradeStats.duplicate()
+	roundNumber=0
 	$Player.start(true)
 	start_round()
 
@@ -168,7 +172,7 @@ func upgradeMenu():
 			'shotgun':['Shotgun','Shoot 5 bullets at once with a limited range and 1/2 fire rate',['dash','shotgun']],
 			'dash':['Dash',"Dash through enemyies to deal damage but, you can't shoot",['dash','shotgun']]}
 		#var CSU=specialUpgrades.keys().filter(func(y): return not specialUpgrades[y][2].any(func(z):return z in specialUpgrades))
-		if x==2 and specialUpgrade=='' and randi_range(0,0)==0:
+		if x==2 and specialUpgrade=='false' and randi_range(0,4) and roundNumber>2==0:
 			var upside=specialUpgrades.keys().pick_random()
 			card.self_modulate=Color(1,0,0)
 			card.get_node('Upsides').text=specialUpgrades[upside][0]
@@ -199,6 +203,9 @@ func card_clicked(card):
 		for x in powers:
 			upgradeStats[x[0]]*x[1]
 	card.get_parent().queue_free()
+	lastPlayerPos=$Player.position
+	$ResetPlayerTimer.start()
+	await $ResetPlayerTimer.timeout
 	roundNumber+=1
 	start_round()
 
@@ -209,3 +216,13 @@ func _on_player_death():
 	for node in get_children():
 		if node.get_meta('bullet', false):node.queue_free()
 	
+func goReset():
+	get_node('DeathScreen/Button').release_focus()
+	for node in get_children():
+		if node.get_meta('enemy', false) or node.get_meta('bullet', false):node.queue_free()
+	$DeathScreen.modulate=Color(1,1,1,0)
+	lastPlayerPos=$Player.position
+	$ResetPlayerTimer.start()
+	await $ResetPlayerTimer.timeout
+	start_game()
+
