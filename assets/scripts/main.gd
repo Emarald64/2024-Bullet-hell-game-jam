@@ -51,6 +51,7 @@ func _process(_delta):
 func start_game():
 	upgradeStats=defaultUpgradeStats.duplicate()
 	roundNumber=0
+	specialUpgrade='none'
 	$Player.start(true)
 	start_round()
 
@@ -173,7 +174,7 @@ func upgradeMenu():
 			'shotgun':['Shotgun','Shoot 5 bullets at once with a limited range and 1/2 fire rate',['dash','shotgun']],
 			'dash':['Dash',"Dash through enemyies to deal damage but, you can't shoot",['dash','shotgun']]}
 		#var CSU=specialUpgrades.keys().filter(func(y): return not specialUpgrades[y][2].any(func(z):return z in specialUpgrades))
-		if x==2 and specialUpgrade=='false' and randi_range(0,4) and roundNumber>2==0:
+		if x==2 and specialUpgrade=='none' and randi_range(0,4)==0 and roundNumber>2:
 			var upside=specialUpgrades.keys().pick_random()
 			card.self_modulate=Color(1,0,0)
 			card.get_node('Upsides').text=specialUpgrades[upside][0]
