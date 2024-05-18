@@ -25,7 +25,7 @@ var laser
 
 var shotgun=false
 var canDash=false
-var canLaser=true
+var canLaser=false
 
 #var dashspeed
 #var speedmod=0

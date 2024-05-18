@@ -33,7 +33,7 @@ func _on_bullet_timer_timeout():
 
 
 func hit(area):
-	if not area.get_meta('Laser',false):health-=1
+	if not area.get_meta('laser',false):health-=1
 	if not area.pierce and not dieing:
 			area.queue_free()
 	if (health<=0 or area.get_meta('Player',false)) and not dieing:
@@ -53,7 +53,8 @@ func _on_animated_sprite_2d_animation_finished():
 func _on_laser_timer_timeout():
 	if len(get_overlapping_areas())>0:
 		var area=get_overlapping_areas()[0]
-		if area.get_meta('Laser',false):
+		if area.get_meta('laser',false):
+			health-=1
 			if health<=0 and not dieing:
 				dieing=true
 				dead.emit()

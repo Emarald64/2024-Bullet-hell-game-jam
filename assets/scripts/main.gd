@@ -50,7 +50,7 @@ func _process(_delta):
 func start_game():
 	upgradeStats=defaultUpgradeStats.duplicate()
 	roundNumber=0
-	specialUpgrade='none'
+	specialUpgrade='laser'
 	$Player.position=Vector2(576,432)
 	$Player.start(true)
 	start_round()
@@ -73,6 +73,7 @@ func start_round():
 	$Player.speed=upgradeStats['playerSpeed']
 	$Player.shotgun='shotgun' == specialUpgrade
 	$Player.canDash='dash' == specialUpgrade
+	$Player.canLaser='laser' == specialUpgrade
 	$Player.shootCooldown=upgradeStats['playerFireCooldown']
 	$Player.start()
 	roundTick=0
@@ -175,9 +176,10 @@ func upgradeMenu():
 		# vairableName:[common name,discription,cant be with,isUpside]
 		const specialUpgrades={
 			'shotgun':['Shotgun','Shoot 5 bullets at once with a limited range and 1/2 fire rate',['dash','shotgun']],
-			'dash':['Dash',"Dash through enemyies to deal damage and have double health but, you can't shoot",['dash','shotgun']]}
+			'dash':['Dash',"Dash through enemyies to deal damage and have double health but, you can't shoot",['dash','shotgun']],
+			'laser':['Laser','Shoot a laser instead of a gun. Laser requires at least 1 second to charge up and shoots for as long as you charged it with a maximum of 3 seconds']}
 		#var CSU=specialUpgrades.keys().filter(func(y): return not specialUpgrades[y][2].any(func(z):return z in specialUpgrades))
-		if x==2 and specialUpgrade=='none' and randi_range(0,4)==0 and roundNumber>2:
+		if x==2 and specialUpgrade=='none' and randi_range(0,0)==0:
 			var upside=specialUpgrades.keys().pick_random()
 			card.self_modulate=Color(1,0,0)
 			card.get_node('Upsides').text=specialUpgrades[upside][0]
