@@ -201,7 +201,7 @@ func card_clicked(card):
 	else:
 		var powers=card.get_meta('Powers')
 		for x in powers:
-			upgradeStats[x[0]]*x[1]
+			upgradeStats[x[0]]*=x[1]
 	card.get_parent().queue_free()
 	lastPlayerPos=$Player.position
 	$ResetPlayerTimer.start()

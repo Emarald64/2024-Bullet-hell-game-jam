@@ -80,7 +80,7 @@ func _process(delta):
 
 
 func _on_body_entered(_body):
-	if not invincible:
+	if not invincible and not dead:
 		health-=1
 		if health<=0:
 			dead=true
@@ -113,6 +113,7 @@ func start(full:bool=true):
 		$ShootCooldown.wait_time=shootCooldown
 	health=maxHealth
 	update_health_bar()
+	self.modulate=Color(1.0,1.0,1.0,1)
 	#speedmod=0
 	#dashmod=0
 	if full:
