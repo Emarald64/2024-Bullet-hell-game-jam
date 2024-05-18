@@ -1,4 +1,4 @@
-extends Node2D
+extends Area2D
 
 var moveSpeed=150
 var bulletSpeed=200
@@ -33,10 +33,10 @@ func _on_bullet_timer_timeout():
 
 
 func hit(area):
-	health-=1
+	if not area.get_meta('Laser',false):health-=1
 	if not area.pierce and not dieing:
 			area.queue_free()
-	if (health<=0 or area.pierce) and not dieing:
+	if (health<=0 or area.get_meta('Player',false)) and not dieing:
 		dieing=true
 		dead.emit()
 		$Sprite2D.hide()
@@ -48,3 +48,16 @@ func hit(area):
 
 func _on_animated_sprite_2d_animation_finished():
 	queue_free()
+
+
+func _on_laser_timer_timeout():
+	if len(get_overlapping_areas())>0:
+		var area=get_overlapping_areas()[0]
+		if area.get_meta('Laser',false):
+			if health<=0 and not dieing:
+				dieing=true
+				dead.emit()
+				$Sprite2D.hide()
+				$Explosion.show()
+				$Explosion.play()
+			else:$Sprite2D.modulate=Color(1,1,1,health/3.0)

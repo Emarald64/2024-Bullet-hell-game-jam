@@ -140,7 +140,8 @@ func on_enemy_death():
 			if node.get_meta('bullet', false):node.queue_free()
 		$RoundTimer.stop()
 		if roundNumber>=9:
-			pass
+			$Player.hide()
+			$EndScreen.show()
 		else:upgradeMenu()
 	elif liveEnemies==0:roundTick=enemies.keys().filter(func(number): return number>roundTick).min()
 
@@ -174,7 +175,7 @@ func upgradeMenu():
 		# vairableName:[common name,discription,cant be with,isUpside]
 		const specialUpgrades={
 			'shotgun':['Shotgun','Shoot 5 bullets at once with a limited range and 1/2 fire rate',['dash','shotgun']],
-			'dash':['Dash',"Dash through enemyies to deal damage but, you can't shoot",['dash','shotgun']]}
+			'dash':['Dash',"Dash through enemyies to deal damage and have double health but, you can't shoot",['dash','shotgun']]}
 		#var CSU=specialUpgrades.keys().filter(func(y): return not specialUpgrades[y][2].any(func(z):return z in specialUpgrades))
 		if x==2 and specialUpgrade=='none' and randi_range(0,4)==0 and roundNumber>2:
 			var upside=specialUpgrades.keys().pick_random()
@@ -183,6 +184,7 @@ func upgradeMenu():
 			card.get_node('Downsides').text=specialUpgrades[upside][1]
 			card.get_node('Downsides').add_theme_color_override('font_color',Color(1,1,1))
 			card.set_meta('Special',upside)
+			if upside=='dash':card.set_meta('Powers',[['playerHealth',2]])
 		else:
 			var upside=stats.keys().pick_random()
 			while (upside=='enemy2Spikes' and upgradeStats['enemy2Spikes']<2) or (upside in ['playerSpeed','playerBulletSpeed'] and upgradeStats[upside]>1000) or ('enemy2' in upside and roundNumber<=0) or ('enemy3' in upside and roundNumber<=3):upside=stats.keys().pick_random()
@@ -202,10 +204,9 @@ func upgradeMenu():
 func card_clicked(card):
 	var special=card.get_meta('Special')
 	if special:specialUpgrade = special
-	else:
-		var powers=card.get_meta('Powers')
-		for x in powers:
-			upgradeStats[x[0]]*=x[1]
+	var powers=card.get_meta('Powers',[])
+	for x in powers:
+		upgradeStats[x[0]]*=x[1]
 	card.get_parent().queue_free()
 	roundNumber+=1
 	$RoundLabel.text='Round: '+str(roundNumber+1)

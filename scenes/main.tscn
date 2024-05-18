@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://berkivgxxdxm2"]
+[gd_scene load_steps=14 format=3 uid="uid://berkivgxxdxm2"]
 
 [ext_resource type="PackedScene" uid="uid://ddsluc837b12v" path="res://scenes/player.tscn" id="1_7w1kc"]
 [ext_resource type="Script" path="res://assets/scripts/main.gd" id="1_61dcd"]
@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://dipmwycpankph" path="res://scenes/death_screen.tscn" id="6_6axhp"]
 [ext_resource type="PackedScene" uid="uid://b84xugi6g5l5y" path="res://scenes/start_screen.tscn" id="6_r7mch"]
 [ext_resource type="PackedScene" uid="uid://d2geabru1tw8w" path="res://scenes/enemy_3.tscn" id="7_seb7a"]
+[ext_resource type="PackedScene" uid="uid://dha2i7436dgbg" path="res://scenes/end_screen.tscn" id="9_r2asi"]
 
 [sub_resource type="Animation" id="Animation_1pfoe"]
 length = 0.001
@@ -96,6 +97,11 @@ text = "Round:10"
 metadata/_edit_use_anchors_ = true
 
 [node name="Start Screen" parent="." instance=ExtResource("6_r7mch")]
+offset_right = 1152.0
+offset_bottom = 648.0
+
+[node name="EndScreen" parent="." instance=ExtResource("9_r2asi")]
+visible = false
 offset_right = 1152.0
 offset_bottom = 648.0
 

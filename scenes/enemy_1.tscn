@@ -68,6 +68,11 @@ position = Vector2(-1.5, -2)
 scale = Vector2(0.25, 0.25)
 sprite_frames = SubResource("SpriteFrames_4pxq8")
 
+[node name="LaserTimer" type="Timer" parent="."]
+wait_time = 0.3
+autostart = true
+
 [connection signal="area_entered" from="." to="." method="hit"]
 [connection signal="timeout" from="BulletTimer" to="." method="_on_bullet_timer_timeout"]
 [connection signal="animation_finished" from="Explosion" to="." method="_on_animated_sprite_2d_animation_finished"]
+[connection signal="timeout" from="LaserTimer" to="." method="_on_laser_timer_timeout"]

@@ -1,8 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://ddsluc837b12v"]
+[gd_scene load_steps=9 format=3 uid="uid://ddsluc837b12v"]
 
 [ext_resource type="Script" path="res://assets/scripts/Player.gd" id="1_veg04"]
 [ext_resource type="Texture2D" uid="uid://c8o34u74nf8u1" path="res://assets/sprites/icon.svg" id="2_4caya"]
 [ext_resource type="PackedScene" uid="uid://b3x51td6ccg4j" path="res://scenes/player_bullet.tscn" id="2_vskuq"]
+[ext_resource type="PackedScene" uid="uid://ws31656xl8ow" path="res://scenes/laser.tscn" id="3_bmvju"]
 [ext_resource type="AudioStream" uid="uid://bh2o2t81cgmf3" path="res://assets/hurt.wav" id="3_l0auy"]
 [ext_resource type="Texture2D" uid="uid://cg0126b5ejg8u" path="res://assets/sprites/health bar/health bar background.png" id="3_u71hg"]
 [ext_resource type="Texture2D" uid="uid://xhujf2fu8vqv" path="res://assets/sprites/health bar/health bar progress.png" id="4_umsi2"]
@@ -14,6 +15,8 @@ size = Vector2(128, 128)
 collision_layer = 0
 script = ExtResource("1_veg04")
 bulletScene = ExtResource("2_vskuq")
+laserScene = ExtResource("3_bmvju")
+metadata/player = true
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 scale = Vector2(0.5, 0.5)

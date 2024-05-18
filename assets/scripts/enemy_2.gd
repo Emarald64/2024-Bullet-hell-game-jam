@@ -39,6 +39,8 @@ func _process(delta):
 
 func on_spike_hit(area,spike):
 	if spike in spikes:
+		if area.get_meta('Laser',false) and spike.get_meta('Health')>=1:
+			spike.set_meta('Health',spike.get_meta('Health')-1)
 		spike.queue_free()
 		numSpikes-=1
 		if not area.pierce:area.queue_free()
