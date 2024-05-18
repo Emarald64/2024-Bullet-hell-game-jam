@@ -42,7 +42,8 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
-	if not $ResetPlayerTimer.is_stopped():$Player.position=lastPlayerPos.lerp(Vector2(576,432),1-$ResetPlayerTimer.time_left*2)
+	if not $ResetPlayerTimer.is_stopped():
+		$Player.position=lastPlayerPos.lerp(Vector2(576,432),1-$ResetPlayerTimer.time_left*2)
 	if Input.is_action_just_pressed("debug_spawn_enemy1"):spawn_enemy1()
 	if Input.is_action_just_pressed("debug_spawn_enemy2"):spawn_enemy2()
 	if Input.is_action_just_pressed("debug_spawn_enemy3"):spawn_enemy3()
@@ -61,7 +62,7 @@ func start_round():
 		{0:2,10:2,15:2,115:1,120:1,125:1,130:1,150:2},
 		{0:3,30:1,35:1,40:1,45:1,50:1,70:2,80:2,85:3,100:2},
 		{0:1,5:1,10:1,15:1,20:1,40:2,50:2,55:3,60:2,100:2,120:2,300:3,1000:3},
-		{},
+		{0:1,3:1,6:1,9:1,12:1,15:1,18:1,21:1,35:3,50:2,70:2,90:2,100:3,110:2,115:1,120:1,125:1,130:1,150:3},
 		{},
 		{},
 		{}]
@@ -163,7 +164,7 @@ func upgradeMenu():
 			'enemy2Spin':['enemy2 spin speed',1,1],
 			'enemy2FireCooldown':['enemy2 fire rate',1,0],
 			'enemy3Speed':['enemy3 speed',0,0],
-			'enemy3Delay':['enemy3 explosion delay',0,0],
+			'enemy3Delay':['enemy3 explosion delay',1,1],
 			'enemy3ExplosionSize':['enemy3 explosion size',0,0]
 			}
 			
@@ -203,10 +204,13 @@ func card_clicked(card):
 		for x in powers:
 			upgradeStats[x[0]]*=x[1]
 	card.get_parent().queue_free()
+	roundNumber+=1
+	$RoundLabel.text='Round: '+str(roundNumber+1)
+	$RoundLabel.show()
 	lastPlayerPos=$Player.position
 	$ResetPlayerTimer.start()
 	await $ResetPlayerTimer.timeout
-	roundNumber+=1
+	$RoundLabel.hide()
 	start_round()
 
 

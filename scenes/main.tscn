@@ -81,5 +81,13 @@ metadata/_edit_lock_ = true
 wait_time = 0.5
 one_shot = true
 
+[node name="RoundLabel" type="Label" parent="."]
+visible = false
+offset_right = 136.0
+offset_bottom = 42.0
+theme_override_font_sizes/font_size = 30
+text = "Round:10"
+metadata/_edit_use_anchors_ = true
+
 [connection signal="death" from="Player" to="." method="_on_player_death"]
 [connection signal="timeout" from="RoundTimer" to="." method="spawnRound"]
