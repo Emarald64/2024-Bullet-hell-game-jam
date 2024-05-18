@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://berkivgxxdxm2"]
+[gd_scene load_steps=13 format=3 uid="uid://berkivgxxdxm2"]
 
 [ext_resource type="PackedScene" uid="uid://ddsluc837b12v" path="res://scenes/player.tscn" id="1_7w1kc"]
 [ext_resource type="Script" path="res://assets/scripts/main.gd" id="1_61dcd"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://ddxp4fxr8xp4f" path="res://scenes/enemy_2.tscn" id="3_3byxl"]
 [ext_resource type="PackedScene" uid="uid://cg5fk4luc0mlb" path="res://scenes/card.tscn" id="4_u73dw"]
 [ext_resource type="PackedScene" uid="uid://dipmwycpankph" path="res://scenes/death_screen.tscn" id="6_6axhp"]
+[ext_resource type="PackedScene" uid="uid://b84xugi6g5l5y" path="res://scenes/start_screen.tscn" id="6_r7mch"]
 [ext_resource type="PackedScene" uid="uid://d2geabru1tw8w" path="res://scenes/enemy_3.tscn" id="7_seb7a"]
 
 [sub_resource type="Animation" id="Animation_1pfoe"]
@@ -38,10 +39,14 @@ tracks/0/keys = {
 "values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
 }
 
+[sub_resource type="Animation" id="Animation_sqcrv"]
+resource_name = "hide Start"
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_w58xm"]
 _data = {
 "RESET": SubResource("Animation_1pfoe"),
-"Show Death Screen": SubResource("Animation_tueof")
+"Show Death Screen": SubResource("Animation_tueof"),
+"hide Start": SubResource("Animation_sqcrv")
 }
 
 [node name="main" type="Node2D"]
@@ -52,6 +57,7 @@ enemy3 = ExtResource("7_seb7a")
 cardScene = ExtResource("4_u73dw")
 
 [node name="Player" parent="." instance=ExtResource("1_7w1kc")]
+visible = false
 z_index = 1
 position = Vector2(576, 432)
 
@@ -89,5 +95,10 @@ theme_override_font_sizes/font_size = 30
 text = "Round:10"
 metadata/_edit_use_anchors_ = true
 
+[node name="Start Screen" parent="." instance=ExtResource("6_r7mch")]
+offset_right = 1152.0
+offset_bottom = 648.0
+
 [connection signal="death" from="Player" to="." method="_on_player_death"]
 [connection signal="timeout" from="RoundTimer" to="." method="spawnRound"]
+[connection signal="start" from="Start Screen" to="." method="_on_start_screen_start"]

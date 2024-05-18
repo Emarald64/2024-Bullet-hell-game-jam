@@ -1,0 +1,320 @@
+[gd_scene load_steps=7 format=3 uid="uid://b84xugi6g5l5y"]
+
+[ext_resource type="Script" path="res://assets/scripts/start_screen.gd" id="1_mk6n8"]
+[ext_resource type="Texture2D" uid="uid://bvfs4twfpiwix" path="res://assets/sprites/enemies/Enemy 1.png" id="2_rvjxw"]
+[ext_resource type="Texture2D" uid="uid://cja285736trkc" path="res://assets/sprites/circle.svg" id="3_35w06"]
+[ext_resource type="Texture2D" uid="uid://q5gpju1m0d8a" path="res://assets/sprites/enemies/enemy3.svg" id="4_33xy3"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_81dy6"]
+bg_color = Color(0.400698, 0.400698, 0.400698, 1)
+corner_radius_top_left = 50
+corner_radius_top_right = 50
+corner_radius_bottom_right = 50
+corner_radius_bottom_left = 50
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_f5xtr"]
+
+[node name="Start Screen" type="ColorRect"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.277528, 0.277528, 0.277528, 1)
+script = ExtResource("1_mk6n8")
+
+[node name="Title" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -151.0
+offset_top = 50.0
+offset_right = 151.0
+offset_bottom = 119.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 50
+text = "GAME NAME"
+
+[node name="Start" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 30
+text = "Start"
+
+[node name="Help" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.667
+anchor_right = 0.5
+anchor_bottom = 0.667
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 20
+text = "How to play"
+
+[node name="Help menu" type="Panel" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -474.0
+offset_top = -274.0
+offset_right = 438.0
+offset_bottom = 268.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_81dy6")
+
+[node name="Title" type="Label" parent="Help menu"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -113.5
+offset_top = 10.0
+offset_right = 113.5
+offset_bottom = 65.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 40
+text = "How to play"
+
+[node name="Controls" type="Label" parent="Help menu"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -361.0
+offset_top = 86.0
+offset_right = 363.0
+offset_bottom = 121.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 20
+text = "Use arrow keys or wasd to move. Shoot with space or Enter."
+horizontal_alignment = 1
+
+[node name="Label" type="Label" parent="Help menu"]
+layout_mode = 0
+offset_left = 36.0
+offset_top = 109.0
+offset_right = 166.0
+offset_bottom = 151.0
+theme_override_font_sizes/font_size = 25
+text = "Enemies:"
+
+[node name="Enemy1 Display" type="Panel" parent="Help menu"]
+layout_mode = 0
+offset_left = 74.0
+offset_top = 151.0
+offset_right = 753.0
+offset_bottom = 253.0
+theme_override_styles/panel = SubResource("StyleBoxEmpty_f5xtr")
+
+[node name="TextureRect" type="TextureRect" parent="Help menu/Enemy1 Display"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -58.0
+offset_right = 40.0
+offset_bottom = -18.0
+grow_vertical = 0
+texture = ExtResource("2_rvjxw")
+
+[node name="Header" type="Label" parent="Help menu/Enemy1 Display"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+theme_override_font_sizes/font_size = 25
+text = "Enemy1:"
+
+[node name="Label2" type="Label" parent="Help menu/Enemy1 Display"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 64.0
+offset_top = -65.0
+offset_right = 615.0
+offset_bottom = -6.0
+grow_vertical = 0
+theme_override_font_sizes/font_size = 20
+text = "Moves accross the top of the screen shooting bullets. Takes 3 hits to kill"
+autowrap_mode = 2
+
+[node name="Enemy2 Display" type="Panel" parent="Help menu"]
+layout_mode = 0
+offset_left = 74.0
+offset_top = 253.0
+offset_right = 753.0
+offset_bottom = 381.0
+theme_override_styles/panel = SubResource("StyleBoxEmpty_f5xtr")
+
+[node name="Header" type="Label" parent="Help menu/Enemy2 Display"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+theme_override_font_sizes/font_size = 25
+text = "Enemy2:"
+
+[node name="Label2" type="Label" parent="Help menu/Enemy2 Display"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 120.0
+offset_top = -64.0
+offset_right = 699.0
+offset_bottom = -5.0
+grow_vertical = 0
+theme_override_font_sizes/font_size = 20
+text = "Bounces around the screen, shooting bullets from each of its spikes. Every Spike needs to be shot to defeat it."
+autowrap_mode = 2
+
+[node name="Control" type="Control" parent="Help menu/Enemy2 Display"]
+anchors_preset = 0
+offset_left = 21.0
+offset_top = 19.0
+offset_right = 61.0
+offset_bottom = 59.0
+scale = Vector2(0.75, 0.75)
+
+[node name="TextureRect" type="TextureRect" parent="Help menu/Enemy2 Display/Control"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = 24.0
+offset_right = 64.0
+offset_bottom = 88.0
+grow_vertical = 0
+texture = ExtResource("3_35w06")
+
+[node name="TextureRect2" type="TextureRect" parent="Help menu/Enemy2 Display/Control"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 58.0
+offset_top = 71.0
+offset_right = 98.0
+offset_bottom = 111.0
+grow_vertical = 0
+rotation = -1.5708
+scale = Vector2(0.75, 0.75)
+texture = ExtResource("2_rvjxw")
+
+[node name="TextureRect3" type="TextureRect" parent="Help menu/Enemy2 Display/Control"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 47.0
+offset_top = 28.0
+offset_right = 87.0
+offset_bottom = 68.0
+grow_vertical = 0
+rotation = -3.14159
+scale = Vector2(0.75, 0.75)
+texture = ExtResource("2_rvjxw")
+
+[node name="TextureRect4" type="TextureRect" parent="Help menu/Enemy2 Display/Control"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 4.0
+offset_top = 41.0
+offset_right = 44.0
+offset_bottom = 81.0
+grow_vertical = 0
+rotation = -4.71239
+scale = Vector2(0.75, 0.75)
+texture = ExtResource("2_rvjxw")
+
+[node name="TextureRect5" type="TextureRect" parent="Help menu/Enemy2 Display/Control"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = 83.0
+offset_right = 56.0
+offset_bottom = 123.0
+grow_vertical = 0
+rotation = -6.28319
+scale = Vector2(0.75, 0.75)
+texture = ExtResource("2_rvjxw")
+
+[node name="Enemy3 Display" type="Panel" parent="Help menu"]
+layout_mode = 0
+offset_left = 74.0
+offset_top = 418.0
+offset_right = 753.0
+offset_bottom = 520.0
+theme_override_styles/panel = SubResource("StyleBoxEmpty_f5xtr")
+
+[node name="TextureRect" type="TextureRect" parent="Help menu/Enemy3 Display"]
+modulate = Color(0.58, 0.2784, 0.2784, 1)
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = -67.0
+offset_right = 138.0
+offset_bottom = 61.0
+grow_vertical = 0
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("4_33xy3")
+
+[node name="Header" type="Label" parent="Help menu/Enemy3 Display"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+theme_override_font_sizes/font_size = 25
+text = "Enemy3:"
+
+[node name="Label2" type="Label" parent="Help menu/Enemy3 Display"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 92.0
+offset_top = -65.0
+offset_right = 643.0
+offset_bottom = -6.0
+grow_vertical = 0
+theme_override_font_sizes/font_size = 20
+text = "Rushes toward you before exploading in a large area"
+autowrap_mode = 2
+
+[node name="OK" type="Button" parent="Help menu"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -18.5
+offset_top = -42.0
+offset_right = 18.5
+offset_bottom = -6.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 20
+text = "OK"
+
+[connection signal="pressed" from="Start" to="." method="_on_start_pressed"]
+[connection signal="pressed" from="Help" to="." method="_on_help_pressed"]
+[connection signal="pressed" from="Help menu/OK" to="." method="_on_ok_pressed"]

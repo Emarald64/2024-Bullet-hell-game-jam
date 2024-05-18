@@ -13,7 +13,7 @@ var lastPlayerPos:Vector2=Vector2.ZERO
 
 const defaultUpgradeStats={
 	'playerFireCooldown':0.25,
-	'playerHealth':5, 
+	'playerHealth':4, 
 	'playerBulletSpeed':300, 
 	'playerSpeed':800,
 
@@ -37,7 +37,6 @@ var specialUpgrade='none'
 func _ready():
 	screen_size = get_viewport_rect().size
 	get_node('DeathScreen/Button').pressed.connect(goReset)
-	start_game()
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -52,6 +51,7 @@ func start_game():
 	upgradeStats=defaultUpgradeStats.duplicate()
 	roundNumber=0
 	specialUpgrade='none'
+	$Player.position=Vector2(576,432)
 	$Player.start(true)
 	start_round()
 
@@ -231,3 +231,7 @@ func goReset():
 	await $ResetPlayerTimer.timeout
 	start_game()
 
+
+
+func _on_start_screen_start():
+	start_game()
