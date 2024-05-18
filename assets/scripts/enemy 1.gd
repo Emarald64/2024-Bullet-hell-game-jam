@@ -36,7 +36,7 @@ func hit(area):
 	health-=1
 	if not area.pierce and not dieing:
 			area.queue_free()
-	if health<=0 and not dieing:
+	if (health<=0 or area.pierce) and not dieing:
 		dieing=true
 		dead.emit()
 		$Sprite2D.hide()

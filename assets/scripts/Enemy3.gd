@@ -35,7 +35,8 @@ func _process(delta):
 		lastPosition=(velocity*0.5**(0.5*friction*explosionDelay))+position
 		$ExplosionTimer.start()
 
-func start_exploasion(_body):
+func start_exploasion(body):
+	if not body.pierce:body.queue_free()
 	if not exploading:
 		exploading=true
 		lastRotation=rotation

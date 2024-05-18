@@ -139,7 +139,9 @@ func on_enemy_death():
 		for node in get_children():
 			if node.get_meta('bullet', false):node.queue_free()
 		$RoundTimer.stop()
-		upgradeMenu()
+		if roundNumber>=9:
+			pass
+		else:upgradeMenu()
 	elif liveEnemies==0:roundTick=enemies.keys().filter(func(number): return number>roundTick).min()
 
 func upgradeMenu():
@@ -156,14 +158,14 @@ func upgradeMenu():
 			'playerHealth':['health',1,1],
 			'playerBulletSpeed':['bullet speed',1,1],
 			'playerSpeed':['Speed',1,1],
-			'enemy1Speed':['enemy1 speed',0,0],
-			'enemy1BulletSpeed':['enemy1 bullet speed',0,0],
-			'enemy1FireCooldown':["enemy1 fire rate",1,0],
-			'enemy2Spikes':['enemy2 spikes',0,0],
-			'enemy2Speed':['enemy2 speed',0,0],
-			'enemy2BulletSpeed':['enemy2 Bullet speed',0,0],
-			'enemy2Spin':['enemy2 spin speed',1,1],
-			'enemy2FireCooldown':['enemy2 fire rate',1,0],
+			'enemy1Speed':['Crusier speed',0,0],
+			'enemy1BulletSpeed':['Crusier bullet speed',0,0],
+			'enemy1FireCooldown':["Crusier fire rate",1,0],
+			'enemy2Spikes':['Fortress spikes',0,0],
+			'enemy2Speed':['Fortress speed',0,0],
+			'enemy2BulletSpeed':['Fortress Bullet speed',0,0],
+			'enemy2Spin':['Fortress spin speed',1,1],
+			'enemy2FireCooldown':['Fortress fire rate',1,0],
 			'enemy3Speed':['enemy3 speed',0,0],
 			'enemy3Delay':['enemy3 explosion delay',1,1],
 			'enemy3ExplosionSize':['enemy3 explosion size',0,0]
@@ -183,7 +185,7 @@ func upgradeMenu():
 			card.set_meta('Special',upside)
 		else:
 			var upside=stats.keys().pick_random()
-			while (upside=='enemy2Spikes' and upgradeStats['enemy2Spikes']<2) or (upside in ['playerSpeed','playerBulletSpeed'] and upgradeStats[upside]>1000) or ('enemy2' in upside and roundNumber<=0) or ('enemy3' in upside and roundNumber<=2):upside=stats.keys().pick_random()
+			while (upside=='enemy2Spikes' and upgradeStats['enemy2Spikes']<2) or (upside in ['playerSpeed','playerBulletSpeed'] and upgradeStats[upside]>1000) or ('enemy2' in upside and roundNumber<=0) or ('enemy3' in upside and roundNumber<=3):upside=stats.keys().pick_random()
 			const powers=[[0.9,1.1],[0.8,1.25],[0.67,1.5],[0.5,2],[0.4,2.5]]
 			var upsidePower=x+randi_range(1,2)
 			card.get_node("Upsides").text='x'+str(powers[upsidePower][stats[upside][2]])+' '+stats[upside][0]

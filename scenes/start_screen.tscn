@@ -136,7 +136,7 @@ layout_mode = 0
 offset_right = 40.0
 offset_bottom = 23.0
 theme_override_font_sizes/font_size = 25
-text = "Enemy1:"
+text = "Crusier:"
 
 [node name="Label2" type="Label" parent="Help menu/Enemy1 Display"]
 layout_mode = 1
@@ -165,7 +165,7 @@ layout_mode = 0
 offset_right = 40.0
 offset_bottom = 23.0
 theme_override_font_sizes/font_size = 25
-text = "Enemy2:"
+text = "Fortress:"
 
 [node name="Label2" type="Label" parent="Help menu/Enemy2 Display"]
 layout_mode = 1
