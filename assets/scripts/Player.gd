@@ -62,7 +62,7 @@ func _process(delta):
 			invincible = true
 			if velocity.length()<speed:
 				velocity*=speed/velocity.length()
-		elif Input.is_action_pressed("shoot") and not dead and canLaser and laserCharge<3:
+		elif Input.is_action_pressed("shoot") and not dead and canLaser and not laserExists and laserCharge<3:
 			laserCharge+=delta
 		elif not Input.is_action_pressed("shoot") and not dead and canLaser and laserCharge>1 and not laserExists:
 			laserExists=true
@@ -77,7 +77,7 @@ func _process(delta):
 				$ExtraBar.value=1-$DashCooldown.time_left/$DashCooldown.wait_time
 			else:$ExtraBar.value=$DashTimer.time_left/$DashTimer.wait_time
 		if laserExists:
-			laserCharge-=delta
+			laserCharge-=delta*shootCooldown*4
 			if laserCharge<=0:
 				laserExists=false
 				#remove laser
@@ -108,6 +108,10 @@ func _on_body_entered(_body):
 	if not invincible and not dead:
 		health-=1
 		if health<=0:
+			if laserExists:
+				laserExists=false
+				#remove laser
+				laser.queue_free()
 			dead=true
 			death.emit()
 		else:
@@ -134,6 +138,9 @@ func start(full:bool=true):
 		$ExtraBar.tint_progress=Color(0,0.75,0.75)
 		$DashCooldown.wait_time=shootCooldown*2
 	elif canLaser:
+		if not barsflipped:
+			$HealthBar.position.y*=-1
+			$ExtraBar.position.y*=-1
 		barsflipped=true
 		$ExtraBar.show()
 		$ExtraBar.tint_progress=Color(0.7,0,0)

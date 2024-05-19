@@ -39,22 +39,20 @@ func _process(delta):
 
 func on_spike_hit(area,spike):
 	if spike in spikes:
-		if area.get_meta('Laser',false) and spike.get_meta('Health')>=1:
-			spike.set_meta('Health',spike.get_meta('Health')-1)
-		spike.queue_free()
-		numSpikes-=1
-		if not area.pierce:area.queue_free()
-		spikes.erase(spike)
-		if numSpikes==0:
-			# Add exploasion
-			dead.emit()
-			set_deferred('monitorable',false)
-			set_deferred('monitoring',false)
-			$Sprite2D.hide()
-			$Explosion.show()
-			$Explosion.play()
-			move=Vector2.ZERO
-			spin=0
+		if not area.get_meta('laser',false):
+			spike.queue_free()
+			numSpikes-=1
+			if not area.pierce:area.queue_free()
+			spikes.erase(spike)
+			if numSpikes==0:
+				dead.emit()
+				set_deferred('monitorable',false)
+				set_deferred('monitoring',false)
+				$Sprite2D.hide()
+				$Explosion.show()
+				$Explosion.play()
+				move=Vector2.ZERO
+				spin=0
 
 func shoot():
 	for spike in spikes:
@@ -68,3 +66,29 @@ func shoot():
 func _on_body_entered(area):
 	if not area.pierce:area.queue_free()
 	# add effect to show bullet deletion
+
+
+func _on_laser_timer_timeout():
+	for spike in spikes:
+		if len(get_overlapping_areas())>0:
+			var area=get_overlapping_areas()[0]
+			if area.get_meta('laser',false):
+				var health=spike.get_meta('health')
+				if health>1:
+					spike.set_meta('health',health-1)
+					spike.modulate=Color(1,1,1,health/3.0)
+					print(health)
+				else:
+					print('dead')
+					spike.queue_free()
+					numSpikes-=1
+					spikes.erase(spike)
+					if numSpikes==0:
+						dead.emit()
+						set_deferred('monitorable',false)
+						set_deferred('monitoring',false)
+						$Sprite2D.hide()
+						$Explosion.show()
+						$Explosion.play()
+						move=Vector2.ZERO
+						spin=0
