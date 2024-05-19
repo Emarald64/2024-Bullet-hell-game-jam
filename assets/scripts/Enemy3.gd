@@ -47,6 +47,7 @@ func _on_explosion_timer_timeout():
 	if player.dead:
 		exploading=false
 	else:
+		set_meta('type','enemy3 explosion')
 		$ExplosionCollision.disabled=false
 		$Explosion.play()
 		$Explosion.show()

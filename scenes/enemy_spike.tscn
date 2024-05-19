@@ -8,6 +8,7 @@ size = Vector2(16.0025, 16.0025)
 [node name="Enemy Spike" type="Area2D"]
 collision_mask = 2
 metadata/health = 3.0
+metadata/type = "enemy2 spike"
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("1_0wc0b")

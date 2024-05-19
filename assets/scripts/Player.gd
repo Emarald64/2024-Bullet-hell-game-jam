@@ -105,9 +105,10 @@ func _process(delta):
 			barsflipped=not barsflipped
 
 
-func _on_body_entered(_body):
+func _on_body_entered(body):
 	if not invincible and not dead:
-		playTestHits.append([get_parent().roundNumber,_body.name])
+		playTestHits.append([get_parent().roundNumber,body.get_meta('type')])
+		print(playTestHits)
 		health-=1
 		if health<=0:
 			if laserExists:
@@ -133,7 +134,7 @@ func _on_body_entered(_body):
 			#speed=((-1.0/(speedmod+3))+1)*SpeedMultipier
 		#body.queue_free()
 
-func start(full:bool=true):
+func start(full:bool=false):
 	#velocity=Vector2.ZERO
 	if canDash:
 		$ExtraBar.show()
@@ -143,7 +144,7 @@ func start(full:bool=true):
 		if not barsflipped:
 			$HealthBar.position.y*=-1
 			$ExtraBar.position.y*=-1
-		barsflipped=true
+			barsflipped=true
 		$ExtraBar.show()
 		$ExtraBar.tint_progress=Color(0.7,0,0)
 		$ExtraBar.max_value=3

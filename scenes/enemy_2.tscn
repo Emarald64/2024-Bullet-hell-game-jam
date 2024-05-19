@@ -54,6 +54,7 @@ script = ExtResource("1_bvf7a")
 bulletScene = ExtResource("2_mcfi8")
 spikeScene = ExtResource("3_27cwi")
 metadata/enemy = true
+metadata/type = "enemy2"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_61tkp")
