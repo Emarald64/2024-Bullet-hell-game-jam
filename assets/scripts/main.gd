@@ -10,6 +10,7 @@ var enemyCount:int
 var liveEnemies=0
 var roundNumber=0
 var lastPlayerPos:Vector2=Vector2.ZERO
+var playTestUpgrades=[]
 
 const defaultUpgradeStats={
 	'playerFireCooldown':0.25,
@@ -49,8 +50,9 @@ func _process(_delta):
 
 func start_game():
 	upgradeStats=defaultUpgradeStats.duplicate()
-	roundNumber=3
-	specialUpgrade='laser'
+	roundNumber=0
+	playTestUpgrades=[]
+	specialUpgrade='none'
 	$Player.position=Vector2(576,432)
 	$Player.start(true)
 	start_round()
@@ -65,7 +67,7 @@ func start_round():
 		{0:3,30:1,35:1,40:1,45:1,50:1,60:3,70:2,80:2,85:3,100:2},
 		{0:1,5:1,10:1,15:1,20:1,40:2,50:2,55:3,60:2,100:2,120:2,300:3,1000:3},
 		{0:1,3:1,6:1,9:1,12:1,15:1,18:1,21:1,35:3,50:2,70:2,90:2,100:3,110:2,115:1,120:1,125:1,130:1,150:3},
-		{},
+		{0:2,1:1,6:1,10:2,11:1,16:1,19:3,20:2,21:1,26:1,30:2,31:1,36:1,40:2},
 		{}]
 	enemies=rounds[roundNumber]
 	$Player.maxHealth=int(upgradeStats['playerHealth'])
@@ -98,7 +100,7 @@ func spawnRound():
 		elif enemies[roundTick]==3:
 			spawn_enemy3()
 			liveEnemies+=1
-	roundTick+=1
+	if typeof(roundTick)!=0:roundTick+=1
 
 func spawn_enemy1():
 	var enemy=enemy1.instantiate()
@@ -140,9 +142,10 @@ func on_enemy_death():
 		for node in get_children():
 			if node.get_meta('bullet', false):node.queue_free()
 		$RoundTimer.stop()
-		if roundNumber>=9:
-			$Player.hide()
+		if roundNumber>=8:
+			$Player.queue_free()
 			$EndScreen.show()
+			get_node('EndScreen/TextEdit').text=str(playTestUpgrades)+' '+str($Player.playTestHits)
 		else:upgradeMenu()
 	elif liveEnemies==0:roundTick=enemies.keys().filter(func(number): return number>roundTick).min()
 
@@ -179,12 +182,14 @@ func upgradeMenu():
 			'dash':['Dash',"Dash through enemyies to deal damage and have double health but, you can't shoot",['dash','shotgun']],
 			'laser':['Laser','Shoot a laser instead of a gun. Laser requires at least 1 second to charge up and shoots for as long as you charged it with a maximum of 3 seconds']}
 		#var CSU=specialUpgrades.keys().filter(func(y): return not specialUpgrades[y][2].any(func(z):return z in specialUpgrades))
-		if x==2 and specialUpgrade=='none' and randi_range(0,0)==0:
+		if x==2 and specialUpgrade=='none' and randi_range(0,4)==0 and roundNumber>2:
 			var upside=specialUpgrades.keys().pick_random()
 			card.self_modulate=Color(1,0,0)
 			card.get_node('Upsides').text=specialUpgrades[upside][0]
 			card.get_node('Downsides').text=specialUpgrades[upside][1]
 			card.get_node('Downsides').add_theme_color_override('font_color',Color(1,1,1))
+			card.get_node('Downsides').position.y-=13
+			if upside=='laser':card.get_node('Downsides').add_theme_font_size_override('font_size',20)
 			card.set_meta('Special',upside)
 			if upside=='dash':card.set_meta('Powers',[['playerHealth',2]])
 		else:
@@ -205,8 +210,11 @@ func upgradeMenu():
 
 func card_clicked(card):
 	var special=card.get_meta('Special')
-	if special:specialUpgrade = special
 	var powers=card.get_meta('Powers',[])
+	if special:
+		playTestUpgrades.append(special)
+		specialUpgrade = special
+	else:playTestUpgrades.append(powers)
 	for x in powers:
 		upgradeStats[x[0]]*=x[1]
 	card.get_parent().queue_free()

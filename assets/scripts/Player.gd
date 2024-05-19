@@ -22,6 +22,7 @@ var barsflipped=false
 var laserCharge=0
 var laserExists=false
 var laser
+var playTestHits=[]
 
 var shotgun=false
 var canDash=false
@@ -106,6 +107,7 @@ func _process(delta):
 
 func _on_body_entered(_body):
 	if not invincible and not dead:
+		playTestHits.append([get_parent().roundNumber,_body.name])
 		health-=1
 		if health<=0:
 			if laserExists:
@@ -156,7 +158,9 @@ func start(full:bool=true):
 	#dashmod=0
 	if full:
 		show()
+		$ExtraBar.hide()
 		dead=false
+		playTestHits=[]
 	
 
 func _on_invincibility_timer_timeout():
