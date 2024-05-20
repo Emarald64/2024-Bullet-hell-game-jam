@@ -34,7 +34,7 @@ offset_right = 151.0
 offset_bottom = 119.0
 grow_horizontal = 2
 theme_override_font_sizes/font_size = 50
-text = "GAME NAME"
+text = "Bullet Storm: Battle for Survival"
 
 [node name="Start" type="Button" parent="."]
 layout_mode = 1
