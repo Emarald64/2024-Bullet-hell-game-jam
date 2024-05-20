@@ -22,7 +22,7 @@ var barsflipped=false
 var laserCharge=0
 var laserExists=false
 var laser
-var playTestHits=[]
+#var playTestHits=[]
 
 var shotgun=false
 var canDash=false
@@ -48,9 +48,9 @@ func _process(delta):
 			for x in range(1 if not shotgun else 5):
 				var bullet = bulletScene.instantiate()
 				bullet.position=position
-				bullet.rotation=0 if not shotgun else randf_range(-0.35,0.35)
+				bullet.rotation=0.0 if not shotgun else randf_range(-0.35,0.35)
 				bullet.move=Vector2(0,-bulletSpeed).rotated(bullet.rotation)
-				bullet.range=INF if not shotgun else 300
+				bullet.range=INF if not shotgun else 300.0
 				get_parent().add_child(bullet)
 				$ShootCooldown.start()
 		elif Input.is_action_just_pressed("shoot") and velocity.length() > 1 and $DashCooldown.is_stopped() and not dead and canDash:
@@ -105,10 +105,10 @@ func _process(delta):
 			barsflipped=not barsflipped
 
 
-func _on_body_entered(body):
+func _on_body_entered(_body):
 	if not invincible and not dead:
-		playTestHits.append([get_parent().roundNumber,body.get_meta('type')])
-		print(playTestHits)
+		#playTestHits.append([get_parent().roundNumber,body.get_meta('type')])
+		#print(playTestHits)
 		health-=1
 		if health<=0:
 			if laserExists:
@@ -154,6 +154,7 @@ func start(full:bool=false):
 	health=maxHealth
 	self.modulate=Color(1.0,1.0,1.0,1)
 	update_health_bar()
+	velocity=Vector2.ZERO
 	#$HealthBar.max_value=health
 	#speedmod=0
 	#dashmod=0
@@ -161,7 +162,7 @@ func start(full:bool=false):
 		show()
 		$ExtraBar.hide()
 		dead=false
-		playTestHits=[]
+		#playTestHits=[]
 	
 
 func _on_invincibility_timer_timeout():

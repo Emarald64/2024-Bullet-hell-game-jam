@@ -9,7 +9,8 @@ var velocity:Vector2=Vector2.ZERO
 var explosionDelay=1
 var exploading=false
 var lastRotation=0
-var lastPosition=Vector2.ZERO
+var projectile=false
+#var lastPosition=Vector2.ZERO
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	$ExplosionCollision.shape.radius=explosionSize
@@ -29,10 +30,10 @@ func _process(delta):
 	#if not exploading:DebugDraw2D.circle((velocity*0.5**(friction*explosionDelay))+position,explosionSize/2)
 	#else:DebugDraw2D.circle(lastPosition,explosionSize)
 	
-	if ((velocity*0.5**(friction*explosionDelay))+position).distance_to(player.position)<explosionSize/2 and not exploading and not player.dead and $VisibleOnScreenNotifier2D.is_on_screen():
+	if not exploading and ((velocity*0.5**(friction*explosionDelay))+position).distance_to(player.position)<explosionSize/2 and not player.dead and $VisibleOnScreenNotifier2D.is_on_screen():
 		exploading=true
 		lastRotation=rotation
-		lastPosition=(velocity*0.5**(0.5*friction*explosionDelay))+position
+		#lastPosition=(velocity*0.5**(0.5*friction*explosionDelay))+position
 		$ExplosionTimer.start()
 
 func start_exploasion(body):
@@ -40,11 +41,11 @@ func start_exploasion(body):
 	if not exploading:
 		exploading=true
 		lastRotation=rotation
-		lastPosition=(velocity*0.5**(0.5*friction*explosionDelay))+position
+		#lastPosition=(velocity*0.5**(0.5*friction*explosionDelay))+position
 		$ExplosionTimer.start()
 
 func _on_explosion_timer_timeout():
-	if player.dead:
+	if not projectile and player.dead:
 		exploading=false
 	else:
 		set_meta('type','enemy3 explosion')
@@ -55,5 +56,5 @@ func _on_explosion_timer_timeout():
 
 
 func _on_explosion_animation_finished():
-	if not player.dead:dead.emit()
+	if not projectile and not player.dead:dead.emit()
 	queue_free()

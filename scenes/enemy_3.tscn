@@ -39,7 +39,7 @@ animations = [{
 }]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_vl4ii"]
-radius = 200.0
+radius = 180.0
 
 [node name="Enemy3" type="Area2D"]
 modulate = Color(0.58, 0.2784, 0.2784, 1)

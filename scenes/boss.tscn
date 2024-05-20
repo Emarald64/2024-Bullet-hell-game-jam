@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://upd68au13bq0"]
+
+[ext_resource type="Texture2D" uid="uid://cja285736trkc" path="res://assets/sprites/circle.svg" id="2_w087s"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_nqsq7"]
+radius = 32.0
+
+[node name="Boss" type="PathFollow2D"]
+z_index = 1
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_mask = 2
+
+[node name="Sprite2D" type="Sprite2D" parent="Area2D"]
+texture = ExtResource("2_w087s")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CircleShape2D_nqsq7")

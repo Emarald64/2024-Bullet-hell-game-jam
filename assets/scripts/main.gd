@@ -2,6 +2,12 @@ extends Node2D
 @export var enemy1:PackedScene
 @export var enemy2:PackedScene
 @export var enemy3:PackedScene
+
+@export var bossScene:PackedScene
+@export var spikeScene:PackedScene
+@export var bullet1Scene:PackedScene
+@export var bullet2Scene:PackedScene
+
 @export var cardScene:PackedScene
 var roundTick=0
 var screen_size
@@ -9,8 +15,16 @@ var enemies:Dictionary
 var enemyCount:int
 var liveEnemies=0
 var roundNumber=0
+
 var lastPlayerPos:Vector2=Vector2.ZERO
-var playTestUpgrades=[]
+#var playTestUpgrades=[]
+
+var bossExists=false
+var bossNodes=[]
+var bossSpikes=[]
+var bossSpeed=300
+var bossMaxHealth=100
+var bossHealth=100
 
 const defaultUpgradeStats={
 	'playerFireCooldown':0.25,
@@ -41,7 +55,8 @@ func _ready():
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(_delta):
+func _process(delta):
+	if roundNumber==9:boss_process(delta)
 	if not $ResetPlayerTimer.is_stopped():
 		$Player.position=lastPlayerPos.lerp(Vector2(576,432),1-$ResetPlayerTimer.time_left*2)
 	if Input.is_action_just_pressed("debug_spawn_enemy1"):spawn_enemy1()
@@ -50,8 +65,8 @@ func _process(_delta):
 
 func start_game():
 	upgradeStats=defaultUpgradeStats.duplicate()
-	roundNumber=0
-	playTestUpgrades=[]
+	roundNumber=9
+	#playTestUpgrades=[]
 	specialUpgrade='none'
 	$Player.position=Vector2(576,432)
 	$Player.start(true)
@@ -68,7 +83,8 @@ func start_round():
 		{0:1,5:1,10:1,15:1,20:1,40:2,50:2,55:3,60:2,100:2,120:2,300:3,1000:3},
 		{0:1,3:1,6:1,9:1,12:1,15:1,18:1,21:1,35:3,50:2,70:2,90:2,100:3,110:2,115:1,120:1,125:1,130:1,150:3},
 		{0:2,1:1,6:1,10:2,11:1,16:1,19:3,20:2,21:1,26:1,30:2,31:1,36:1,40:2},
-		{}]
+		{0:666}# =>
+		]
 	enemies=rounds[roundNumber]
 	$Player.maxHealth=int(upgradeStats['playerHealth'])
 	$Player.bulletSpeed=upgradeStats['playerBulletSpeed']
@@ -99,6 +115,9 @@ func spawnRound():
 			liveEnemies+=1
 		elif enemies[roundTick]==3:
 			spawn_enemy3()
+			liveEnemies+=1
+		elif enemies[roundTick]==666:
+			spawn_boss()
 			liveEnemies+=1
 	if typeof(roundTick)!=0:roundTick+=1
 
@@ -135,6 +154,30 @@ func spawn_enemy3():
 	enemy.explosionSize=upgradeStats['enemy3ExplosionSize']
 	add_child(enemy)
 
+func spawn_boss():
+	bossMaxHealth=upgradeStats['playerHealth']*30
+	bossHealth=bossMaxHealth
+	$BossShootTimer.start()
+	$BossHealthBar.show()
+	$BossHealthBar.value=bossHealth
+	$BossHealthBar.max_value=bossMaxHealth
+	for x in range(5):
+		var part=bossScene.instantiate()
+		part.progress=84*x
+		part.get_node('Area2D').area_entered.connect(boss_hit.bind(1))
+		part.get_node('Area2D').scale=Vector2(1.5,1.5)
+		for y in range(upgradeStats['enemy2Spikes']):
+			var spike=spikeScene.instantiate()
+			spike.rotation=(y*TAU/upgradeStats['enemy2Spikes'])-PI/2
+			spike.position=Vector2(cos(y*TAU/upgradeStats['enemy2Spikes']),sin(y*TAU/upgradeStats['enemy2Spikes']))*40
+			spike.scale=Vector2(1.2,1.2)
+			spike.area_entered.connect(boss_hit.bind(2))
+			bossSpikes.append(spike)
+			part.get_node('Area2D').add_child(spike)
+		bossNodes.append(part)
+		$BossPath.add_child(part)
+	bossExists=true
+
 func on_enemy_death():
 	enemyCount-=1
 	liveEnemies-=1
@@ -142,10 +185,10 @@ func on_enemy_death():
 		for node in get_children():
 			if node.get_meta('bullet', false):node.queue_free()
 		$RoundTimer.stop()
-		if roundNumber>=8:
+		if roundNumber>=9:
 			$Player.queue_free()
 			$EndScreen.show()
-			get_node('EndScreen/TextEdit').text=str(playTestUpgrades)+' '+str($Player.playTestHits)
+			#get_node('EndScreen/TextEdit').text=str(playTestUpgrades)+' '+str($Player.playTestHits)
 		else:upgradeMenu()
 	elif liveEnemies==0:roundTick=enemies.keys().filter(func(number): return number>roundTick).min()
 
@@ -212,9 +255,9 @@ func card_clicked(card):
 	var special=card.get_meta('Special')
 	var powers=card.get_meta('Powers',[])
 	if special:
-		playTestUpgrades.append(special)
+		#playTestUpgrades.append(special)
 		specialUpgrade = special
-	else:playTestUpgrades.append(powers)
+	#else:playTestUpgrades.append(powers)
 	for x in powers:
 		upgradeStats[x[0]]*=x[1]
 	card.get_parent().queue_free()
@@ -244,7 +287,51 @@ func goReset():
 	await $ResetPlayerTimer.timeout
 	start_game()
 
-
-
 func _on_start_screen_start():
 	start_game()
+
+func boss_process(delta):
+	if bossExists:
+		#Image i make an entire boss fight right before the jam is done. (lol)
+		for node in bossNodes:
+			node.progress+=bossSpeed*delta
+			node.get_node('Area2D').rotation+=PI*delta
+
+func boss_hit(area,damage=1):
+	print(damage)
+	bossHealth-=damage
+	if not area.pierce:area.queue_free()
+	if bossHealth<=bossMaxHealth*0.25:$BossHealthBar.tint_progress=Color(1,0,0)
+	elif bossHealth<=bossMaxHealth*0.5:$BossHealthBar.tint_progress=Color(1,1,0)
+	else:$BossHealthBar.tint_progress=Color(0,1,0)
+	$BossHealthBar.value=bossHealth
+
+
+func _on_boss_shoot_timer_timeout():
+	if bossNodes[2].position.x<100 or bossNodes[0].position.x>1052:
+		for spike in bossSpikes:
+			var bullet=bullet2Scene.instantiate()
+			bullet.position=spike.get_parent().get_parent().position+spike.position.rotated(spike.get_parent().rotation)
+			bullet.rotation=spike.rotation+spike.get_parent().rotation+spike.get_parent().get_parent().rotation
+			bullet.move=Vector2(upgradeStats['enemy2BulletSpeed'],0).rotated(spike.rotation+spike.get_parent().rotation+spike.get_parent().get_parent().rotation+PI/2)
+			add_child(bullet)
+	elif bossNodes[0].position.y<100:
+		for spike in bossSpikes:
+			var bullet=bullet1Scene.instantiate()
+			bullet.position=spike.get_parent().get_parent().position+spike.position.rotated(spike.get_parent().rotation)
+			bullet.linear_velocity=Vector2(0,upgradeStats['enemy1BulletSpeed'])
+			add_child(bullet)
+	else:
+		for spike in bossSpikes:
+			var bullet=enemy3.instantiate()
+			bullet.position=spike.get_parent().get_parent().position+spike.position.rotated(spike.get_parent().rotation)
+			bullet.exploading=true
+			bullet.lastRotation=PI/2
+			bullet.scale=(Vector2(upgradeStats['enemy3ExplosionSize']*0.5/180,upgradeStats['enemy3ExplosionSize']*0.5/180))
+			bullet.projectile=true
+			bullet.get_node('ExplosionTimer').wait_time=upgradeStats['enemy3Delay']
+			#bullet.get_node('ExplosionCollision').shape.radius=100
+			#bullet.get_node('Explosion').scale=Vector2(0.5,0.5)
+			bullet.velocity=Vector2(0,-randf_range(200,600))
+			add_child(bullet)
+			bullet.get_node('ExplosionTimer').start()
