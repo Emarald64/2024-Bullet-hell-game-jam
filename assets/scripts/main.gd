@@ -155,7 +155,7 @@ func spawn_enemy3():
 	add_child(enemy)
 
 func spawn_boss():
-	bossMaxHealth=upgradeStats['playerHealth']*30
+	bossMaxHealth=5#upgradeStats['playerHealth']*30
 	bossHealth=bossMaxHealth
 	$BossShootTimer.start()
 	$BossHealthBar.show()
@@ -298,40 +298,47 @@ func boss_process(delta):
 			node.get_node('Area2D').rotation+=PI*delta
 
 func boss_hit(area,damage=1):
-	print(damage)
+	#print(damage)
 	bossHealth-=damage
 	if not area.pierce:area.queue_free()
-	if bossHealth<=bossMaxHealth*0.25:$BossHealthBar.tint_progress=Color(1,0,0)
+	if bossHealth<=0:
+		for x in bossNodes:
+			x.queue_free()
+		on_enemy_death()
+		bossExists=false
+		$BossHealthBar.hide()
+	elif bossHealth<=bossMaxHealth*0.25:$BossHealthBar.tint_progress=Color(1,0,0)
 	elif bossHealth<=bossMaxHealth*0.5:$BossHealthBar.tint_progress=Color(1,1,0)
 	else:$BossHealthBar.tint_progress=Color(0,1,0)
 	$BossHealthBar.value=bossHealth
 
 
 func _on_boss_shoot_timer_timeout():
-	if bossNodes[2].position.x<100 or bossNodes[0].position.x>1052:
-		for spike in bossSpikes:
-			var bullet=bullet2Scene.instantiate()
-			bullet.position=spike.get_parent().get_parent().position+spike.position.rotated(spike.get_parent().rotation)
-			bullet.rotation=spike.rotation+spike.get_parent().rotation+spike.get_parent().get_parent().rotation
-			bullet.move=Vector2(upgradeStats['enemy2BulletSpeed'],0).rotated(spike.rotation+spike.get_parent().rotation+spike.get_parent().get_parent().rotation+PI/2)
-			add_child(bullet)
-	elif bossNodes[0].position.y<100:
-		for spike in bossSpikes:
-			var bullet=bullet1Scene.instantiate()
-			bullet.position=spike.get_parent().get_parent().position+spike.position.rotated(spike.get_parent().rotation)
-			bullet.linear_velocity=Vector2(0,upgradeStats['enemy1BulletSpeed'])
-			add_child(bullet)
-	else:
-		for spike in bossSpikes:
-			var bullet=enemy3.instantiate()
-			bullet.position=spike.get_parent().get_parent().position+spike.position.rotated(spike.get_parent().rotation)
-			bullet.exploading=true
-			bullet.lastRotation=PI/2
-			bullet.scale=(Vector2(upgradeStats['enemy3ExplosionSize']*0.5/180,upgradeStats['enemy3ExplosionSize']*0.5/180))
-			bullet.projectile=true
-			bullet.get_node('ExplosionTimer').wait_time=upgradeStats['enemy3Delay']
-			#bullet.get_node('ExplosionCollision').shape.radius=100
-			#bullet.get_node('Explosion').scale=Vector2(0.5,0.5)
-			bullet.velocity=Vector2(0,-randf_range(200,600))
-			add_child(bullet)
-			bullet.get_node('ExplosionTimer').start()
+	if bossExists:
+		if bossNodes[2].position.x<100 or bossNodes[0].position.x>1052:
+			for spike in bossSpikes:
+				var bullet=bullet2Scene.instantiate()
+				bullet.position=spike.get_parent().get_parent().position+spike.position.rotated(spike.get_parent().rotation)
+				bullet.rotation=spike.rotation+spike.get_parent().rotation+spike.get_parent().get_parent().rotation
+				bullet.move=Vector2(upgradeStats['enemy2BulletSpeed'],0).rotated(spike.rotation+spike.get_parent().rotation+spike.get_parent().get_parent().rotation+PI/2)
+				add_child(bullet)
+		elif bossNodes[0].position.y<100:
+			for spike in bossSpikes:
+				var bullet=bullet1Scene.instantiate()
+				bullet.position=spike.get_parent().get_parent().position+spike.position.rotated(spike.get_parent().rotation)
+				bullet.linear_velocity=Vector2(0,upgradeStats['enemy1BulletSpeed'])
+				add_child(bullet)
+		else:
+			for spike in bossSpikes:
+				var bullet=enemy3.instantiate()
+				bullet.position=spike.get_parent().get_parent().position+spike.position.rotated(spike.get_parent().rotation)
+				bullet.exploading=true
+				bullet.lastRotation=PI/2
+				bullet.scale=(Vector2(upgradeStats['enemy3ExplosionSize']*0.5/180,upgradeStats['enemy3ExplosionSize']*0.5/180))
+				bullet.projectile=true
+				bullet.get_node('ExplosionTimer').wait_time=upgradeStats['enemy3Delay']
+				#bullet.get_node('ExplosionCollision').shape.radius=100
+				#bullet.get_node('Explosion').scale=Vector2(0.5,0.5)
+				bullet.velocity=Vector2(0,-randf_range(200,600))
+				add_child(bullet)
+				bullet.get_node('ExplosionTimer').start()
