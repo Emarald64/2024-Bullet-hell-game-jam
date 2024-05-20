@@ -141,7 +141,11 @@ tint_progress = Color(0, 1, 0, 1)
 
 [node name="BossShootTimer" type="Timer" parent="."]
 
+[node name="BossLaserTimer" type="Timer" parent="."]
+wait_time = 0.15
+
 [connection signal="death" from="Player" to="." method="_on_player_death"]
 [connection signal="timeout" from="RoundTimer" to="." method="spawnRound"]
 [connection signal="start" from="Start Screen" to="." method="_on_start_screen_start"]
 [connection signal="timeout" from="BossShootTimer" to="." method="_on_boss_shoot_timer_timeout"]
+[connection signal="timeout" from="BossLaserTimer" to="." method="_on_boss_laser_timer_timeout"]
