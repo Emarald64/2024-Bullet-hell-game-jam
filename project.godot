@@ -16,10 +16,6 @@ config/features=PackedStringArray("4.2", "GL Compatibility")
 run/max_fps=60
 config/icon="res://assets/sprites/icon.svg"
 
-[autoload]
-
-DebugDraw2D="*res://addons/debugdraw2d/DebugDraw2D.gd"
-
 [display]
 
 window/size/mode=2
