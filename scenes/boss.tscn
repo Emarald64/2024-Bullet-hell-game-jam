@@ -7,6 +7,7 @@ radius = 32.0
 
 [node name="Boss" type="PathFollow2D"]
 z_index = 1
+metadata/enemy = true
 
 [node name="Area2D" type="Area2D" parent="."]
 collision_mask = 2

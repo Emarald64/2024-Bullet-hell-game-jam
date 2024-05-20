@@ -65,9 +65,9 @@ func _process(delta):
 
 func start_game():
 	upgradeStats=defaultUpgradeStats.duplicate()
-	roundNumber=9
+	roundNumber=0
 	#playTestUpgrades=[]
-	specialUpgrade='laser'
+	specialUpgrade='none'
 	$Player.position=Vector2(576,432)
 	$Player.start(true)
 	start_round()
@@ -197,7 +197,7 @@ func upgradeMenu():
 	var background=ColorRect.new()
 	background.color=Color(0,0,0,0.5)
 	background.size=screen_size
-	background.z_index=1
+	background.z_index=3
 	for x in range(3):
 		# create card
 		var card=cardScene.instantiate()
@@ -215,9 +215,9 @@ func upgradeMenu():
 			'enemy2BulletSpeed':['Fortress Bullet speed',0,0],
 			'enemy2Spin':['Fortress spin speed',1,1],
 			'enemy2FireCooldown':['Fortress fire rate',1,0],
-			'enemy3Speed':['enemy3 speed',0,0],
-			'enemy3Delay':['enemy3 explosion delay',1,1],
-			'enemy3ExplosionSize':['enemy3 explosion size',0,0]
+			'enemy3Speed':['kamikaze speed',0,0],
+			'enemy3Delay':['kamikaze explosion delay',1,1],
+			'enemy3ExplosionSize':['kamikaze explosion size',0,0]
 			}
 			
 		# vairableName:[common name,discription,cant be with,isUpside]
@@ -280,6 +280,10 @@ func _on_player_death():
 	
 func goReset():
 	get_node('DeathScreen/Button').release_focus()
+	if bossExists:
+		bossExists=false
+		for node in bossNodes:
+			node.queue_free()
 	for node in get_children():
 		if node.get_meta('enemy', false) or node.get_meta('bullet', false):node.queue_free()
 	$DeathScreen.modulate=Color(1,1,1,0)
@@ -348,20 +352,21 @@ func _on_boss_shoot_timer_timeout():
 
 func _on_boss_laser_timer_timeout():
 	var hit=false
-	for node in bossNodes:
-		if not hit and len(node.get_node('Area2D').get_overlapping_areas())>0:
-			for x in node.get_node('Area2D').get_overlapping_areas():
-				if not hit and x.get_meta('laser',false):
-					bossHealth-=1
-					if bossHealth<=0:
-						for y in bossNodes:
-							y.queue_free()
-						on_enemy_death()
-						bossExists=false
-						$BossHealthBar.hide()
-					elif bossHealth<=bossMaxHealth*0.25:$BossHealthBar.tint_progress=Color(1,0,0)
-					elif bossHealth<=bossMaxHealth*0.5:$BossHealthBar.tint_progress=Color(1,1,0)
-					else:$BossHealthBar.tint_progress=Color(0,1,0)
-					$BossHealthBar.value=bossHealth
-					hit=true
-					break
+	if bossExists:
+		for node in bossNodes:
+			if not hit and len(node.get_node('Area2D').get_overlapping_areas())>0:
+				for x in node.get_node('Area2D').get_overlapping_areas():
+					if not hit and x.get_meta('laser',false):
+						bossHealth-=1
+						if bossHealth<=0:
+							for y in bossNodes:
+								y.queue_free()
+							on_enemy_death()
+							bossExists=false
+							$BossHealthBar.hide()
+						elif bossHealth<=bossMaxHealth*0.25:$BossHealthBar.tint_progress=Color(1,0,0)
+						elif bossHealth<=bossMaxHealth*0.5:$BossHealthBar.tint_progress=Color(1,1,0)
+						else:$BossHealthBar.tint_progress=Color(0,1,0)
+						$BossHealthBar.value=bossHealth
+						hit=true
+						break
